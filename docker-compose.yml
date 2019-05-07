@@ -1,0 +1,81 @@
+version: '3'
+services:
+    nginx:
+        build: ./nginx
+        restart: always
+        ports:
+        - "7080:80" 
+        volumes:        
+        - ./api:/docker_api     
+        - ./log:/var/log/nginx              
+        depends_on:
+        - api
+        networks: 
+        - web_nw
+        
+    api:
+        build: ./api        
+        restart: always    
+        working_dir: /docker_api/streamingAnalyzer
+        ipc: "host"
+        # command: uwsgi --master --http :5054 --http-websockets --http-timeout 600 --websocket-pong-tolerance 3600 --gevent 100 --wsgi app_plasma_new:app --py-autoreload 1
+        command: uwsgi --master --http :5050 --http-websockets --http-connect-timeout 600 --socket-timeout 600 --http-timeout 600 --websocket-pong-tolerance 3600 --gevent 100 --wsgi app_plasma_new:app --py-autoreload 1
+        volumes:
+        - ./api:/docker_api
+        ports:
+        - "7001-7010:5050"
+        networks: 
+        - web_nw
+    videoapi:
+        build:
+            context: ./videoapi
+            dockerfile: Dockerfile
+        volumes:        
+        - ./videoapi:/videoapi
+        - api_data:/videoapi/files
+        - db_data:/db
+        restart: always
+        ports:
+        - "7051:5001"
+        depends_on:
+        - redis
+        ipc: "host"
+        networks: 
+        - web_nw
+    redis:
+        image: redis
+        networks: 
+        - web_nw
+    worker:
+        build:
+            context: queue
+            dockerfile: Dockerfile
+        volumes:        
+        - ./queue:/queue
+        - api_data:/files
+        - db_data:/db
+        depends_on:
+        - redis
+        ipc: "host"
+        networks: 
+        - web_nw
+    monitor:
+        build:
+            context: queue
+            dockerfile: Dockerfile
+        ports:
+        - "7055:5555"
+        entrypoint: flower
+        command:  -A tasks --port=5555 --broker=redis://redis:6379/0
+        depends_on:
+            - redis
+        networks: 
+        - web_nw
+    
+volumes:
+    api_data:
+    db_data:
+networks: 
+    web_nw:
+        driver: bridge
+    
