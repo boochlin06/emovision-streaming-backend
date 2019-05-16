@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import url_for,request,g,send_file, send_from_directory,make_response,session,jsonify
-from worker import celery
+from workers import celery
 import celery.states as states
 from celery.task.control import revoke
 from urllib.parse import quote
@@ -79,10 +79,6 @@ def add():
                     db.session.add(video)
                     db.session.commit()
                     
-                # cap = cv2.VideoCapture(video_url)
-                # total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-                # width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-                # height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
                 app.logger.info("length:"+str(length))
             else:
                 response["success"] = False
@@ -142,35 +138,44 @@ def validTotalVideosSize(newVideoSize):
 def delete_task(task_id):
     response = {}
     try:
-        revoke(task_id,terminate=True)
         video = Video.query.filter_by(taskId=task_id).first()
         if video is None:
             response["success"] = False
             response["error"] = {"code":1,"message":"Invalid Argument"}
             return json.dumps(response),400
-        filePath = os.getcwd()+"/files/"+video.inputVideo
-        if os.path.exists(filePath):
-            os.remove(filePath)
-        else:
-            app.logger.debug("The input file does not exist")
-        filePath = os.getcwd()+"/files/"+video.outputVideo
-        if os.path.exists(filePath):
-            os.remove(filePath)
-        else:
-            app.logger.debug("The output video file does not exist!")
-        filePath = os.getcwd()+"/files/"+video.outputJson
-        if os.path.exists(filePath):
-            os.remove(filePath)
-        else:
-            app.logger.debug("The output json does not exist!")
+        revoke(task_id,terminate=True)
+        if (video.inputVideo is not None):
+            filePath = os.getcwd()+"/files/"+video.inputVideo
+            if os.path.exists(filePath):
+                os.remove(filePath)
+            else:
+                app.logger.debug("The input file does not exist")
+        if (video.outputVideo is not None):
+            filePath = os.getcwd()+"/files/"+video.outputVideo
+            if os.path.exists(filePath):
+                os.remove(filePath)
+            else:
+                app.logger.debug("The output video file does not exist!")
+        if (video.outputJson is not None):
+            filePath = os.getcwd()+"/files/"+video.outputJson
+            if os.path.exists(filePath):
+                os.remove(filePath)
+            else:
+                app.logger.debug("The output json does not exist!")
         db.session.delete(video)
         db.session.commit()
         response["success"] = True
         return json.dumps(response) ,200
+    except SystemExit as se:
+        app.logger.error(str(se))
+        app.logger.error(traceback.format_exc())
+        response["success"] = True
+        # response["error"] = {"code":0,"message":"UNKNOW"}
+        return json.dumps(response) ,200
     except Exception as e:
         app.logger.error(str(e))
         app.logger.error(traceback.format_exc())
-        response["success"] = True
+        response["success"] = False
         # response["error"] = {"code":0,"message":"UNKNOW"}
         return json.dumps(response) ,500
 

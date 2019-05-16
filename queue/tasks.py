@@ -114,7 +114,7 @@ def analyze_url(self,video_url,output_json):
     except:
         video.state= "ERROR"
         db.session.commit()
-        print(traceback.format_exc())
+        print("analyze_url:",traceback.format_exc())
         tasks.logger.error(traceback.format_exc())
     
     return video.to_json()
