@@ -42,7 +42,6 @@ app.config['SESSION_REDIS'] = redis.Redis(host='redis', port=6379)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////db/video.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
-db.drop_all()
 db.create_all()
 Session(app)
 
@@ -78,13 +77,13 @@ def add():
                     video = Video(startTime=millis(),taskId=task.id,inputVideo=video_url,size=length)
                     db.session.add(video)
                     db.session.commit()
-                    
-                app.logger.info("length:"+str(length))
+                    response["success"] = True
+                    response["task"] = video.to_json()
+                    return json.dumps(response),200
             else:
                 response["success"] = False
                 response["error"] = {"code":1,"message":"Invalid Argument:NOT MP4"}
                 return json.dumps(response),400
-            return video_url
         elif request.method == 'POST' and 'video_file' in request.files:
             enableOutputJson = 1
             if ('output_json' in request.form): 

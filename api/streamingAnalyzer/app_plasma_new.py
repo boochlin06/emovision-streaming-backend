@@ -99,13 +99,11 @@ def consumer(id):
         if (q.qsize()==0):
             gevent.sleep(0)
         try:
-            # print(id,'time:',datetime.datetime.now(),'start to get data consumer,',id,'q size:',q.qsize())
             analyzeItem = q.get()
             if (analyzeItem.ws.connected == False):
                 while (q.qsize()>0):
                     q.get()
                 break
-            # print(analyzeItem.ws.id[:7],'time:',datetime.datetime.now(),',consumer ',id,'cosume:',analyzeItem.plasmaId,",q size:",q.qsize())
             analyze(analyzeItem.buffer,analyzeItem.plasmaId,analyzeItem.ws,analyzeItem.timeStamp)
         except Exception as e:
             gevent.sleep(0)
@@ -232,7 +230,7 @@ def svaeVideoFrame(ws):
                             ret ,img = camera.read()
                             retry = 0
                             while(ret == False and retry < 3):
-                                gevent.sleep(5000)
+                                gevent.sleep(1000)
                                 ret ,img = camera.read()
                                 print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'retry times :',retry,",result:",ret)
                                 retry +=1
