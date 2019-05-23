@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import url_for,request,g,send_file, send_from_directory,make_response,session,jsonify
+from flask import url_for,request,Response,send_file, send_from_directory,make_response,session,jsonify,redirect,render_template
 from workers import celery
 import celery.states as states
 from celery.task.control import revoke
@@ -7,6 +7,8 @@ from urllib.parse import quote
 import sys
 import os
 import time
+import re
+import mimetypes
 from flask_uploads import UploadSet, configure_uploads, ALL
 from requests_toolbelt import MultipartEncoder
 import requests
@@ -19,6 +21,7 @@ from database import Webhook
 import urllib3
 import traceback
 import json
+
 from sqlalchemy.sql import func
 import logging
 try:
@@ -30,7 +33,7 @@ import cv2
 SPACE_LIMIT = 20 * 1000 * 1000 *1000
 TEST_API_KEY = 'sheshin'
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/files', static_folder='files')
 
 app.config['SECRET_KEY'] = 'wansam'
 app.config['UPLOADED_VIDEOS_DEST'] =  os.getcwd()+"/files/"
@@ -48,10 +51,13 @@ Session(app)
 videos = UploadSet('videos',ALL)
 configure_uploads(app, videos)
 
+MB = 1 << 20
+BUFF_SIZE = 10 * MB
 if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
     app.logger.setLevel(gunicorn_logger.level)
+
 
 @app.route('/v1/video',methods=['POST'])
 def add():
@@ -231,22 +237,75 @@ def download_Video(task_id):
             response["success"] = False
             response["error"] = {"code":1,"message":"Invalid Argument"}
             return json.dumps(response),400
-        elif video.states != "FINISH":
+        elif video.state != "FINISH":
             response["success"] = False
             response["error"] = {"code":2,"message":"Task Not Finish"}
             return json.dumps(response),400
-        filename = video.outputVideo
-        app.logger.debug('download:'+filename)
-        response = make_response(send_from_directory(path, filename))
-        response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
-            quote(filename))
-        return response,200
+        if (video.outputVideo is not None):
+            filename = video.outputVideo
+            app.logger.debug('download:'+filename)
+            response = make_response(send_from_directory(path, filename))
+            response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
+                quote(filename))
+            #start, end = get_range(request)
+            return response
+            # return render_template('ws-test.html',video="files/"+filename)
+        response["success"] = False
+        response["error"] = {"code":1,"message":"Invalid Argument"}
+        return json.dumps(response),400
     except Exception as e:
         app.logger.error(traceback.format_exc())
         app.logger.error(str(e))
         response["success"] = False
         response["error"] = {"code":0,"message":"UNKNOW"}
         return json.dumps(response),500
+
+def partial_response(path, start, end=None):
+    file_size = os.path.getsize(path)
+
+    # Determine (end, length)
+    if end is None:
+        end = start + BUFF_SIZE - 1
+    end = min(end, file_size - 1)
+    end = min(end, start + BUFF_SIZE - 1)
+    length = end - start + 1
+    app.logger.debug("file size:"+str(file_size)+",length:"+str(length)+",start:"+str(start)+",end:"+str(end))
+
+    # Read file
+    with open(path, 'rb') as fd:
+        fd.seek(start)
+        bytes = fd.read(length)
+    assert len(bytes) == length
+
+    response = Response(
+        bytes,
+        206,
+        mimetype=mimetypes.guess_type(path)[0],
+        direct_passthrough=True,
+    )
+    response.headers.add(
+        'Content-Range', 'bytes {0}-{1}/{2}'.format(
+            start, end, file_size,
+        ),
+    )
+    response.headers.add(
+        'Accept-Ranges', 'bytes'
+    )
+    return response
+
+def get_range(request):
+    app.logger.debug("Range :"+str(request.headers.get('Range')))
+    range = request.headers.get('Range')
+    m = re.match('bytes=(?P<start>\d+)-(?P<end>\d+)?', str(range))
+    if m:
+        start = m.group('start')
+        end = m.group('end')
+        start = int(start)
+        if end is not None:
+            end = int(end)
+        return start, end
+    else:
+        return 0, None
 
 @app.route('/v1/video/download/json/<string:task_id>',methods=['GET'])
 def download_Json(task_id):
@@ -258,16 +317,20 @@ def download_Json(task_id):
             response["success"] = False
             response["error"] = {"code":1,"message":"Invalid Argument"}
             return json.dumps(response),400
-        elif video.states != "FINISH":
+        elif video.state != "FINISH":
             response["success"] = False
             response["error"] = {"code":2,"message":"Task Not Finish"}
             return json.dumps(response),400
-        filename = video.outputJson
-        app.logger.debug('download:'+filename)
-        response = make_response(send_from_directory(path, filename))
-        response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
-            quote(filename))
-        return response,200
+        if (video.outputJson is not None):
+            filename = video.outputJson
+            app.logger.debug('download:'+filename)
+            response = make_response(send_from_directory(path, filename))
+            response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
+                quote(filename))
+            return response,200
+        response["success"] = False
+        response["error"] = {"code":1,"message":"Invalid Argument"}
+        return json.dumps(response),400
     except Exception as e:
         app.logger.error(traceback.format_exc())
         app.logger.error(str(e))

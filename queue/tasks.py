@@ -145,11 +145,11 @@ def process(source,file_name, enable_output_json):
     count = 0
     start_time = datetime.datetime.now()
 
-    fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+    fourcc = cv2.VideoWriter_fourcc('h','2','6','4')
     videoWriter = cv2.VideoWriter(outputName,int(fourcc), fps,(int(width),int(height)),True)
     client = plasma.connect("/dev/shm/plasma", "", 0)
-
-    while(True):
+    count =0
+    while(count < total_frames):
         count += 1
         ret, img = cap.read()
         if(not ret):
@@ -178,10 +178,11 @@ def process(source,file_name, enable_output_json):
                     
                     json_file.flush()
 
-                for face in data["faces"]:
-                    rect = face["face_rectangle"]
-                    emotidraw.draw_face_rect(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
-                    emotidraw.draw_face_emoji(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
+                if ('faces' in data):
+                    for face in data["faces"]:
+                        rect = face["face_rectangle"]
+                        emotidraw.draw_face_rect(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
+                        emotidraw.draw_face_emoji(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
 
                 videoWriter.write(img)
                 duration = datetime.datetime.now()- start_time
@@ -193,7 +194,6 @@ def process(source,file_name, enable_output_json):
                 break
                 # continue
             break
-
 
     videoWriter.release()
     cap.release()

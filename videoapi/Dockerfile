@@ -20,7 +20,7 @@ EXPOSE 5001
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple gunicorn
 
 # run the app server
-CMD ["gunicorn", "--bind", "0.0.0.0:5001","--log-level","debug","--reload", "--workers", "3", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5001","--log-level","debug","--reload","--timeout", "300", "--workers", "3", "app:app"]
 
 RUN apt-get install curl
 HEALTHCHECK --interval=5m --timeout=10s \

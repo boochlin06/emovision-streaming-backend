@@ -230,7 +230,7 @@ def svaeVideoFrame(ws):
                             ret ,img = camera.read()
                             retry = 0
                             while(ret == False and retry < 3):
-                                gevent.sleep(1000)
+                                gevent.sleep(2)
                                 ret ,img = camera.read()
                                 print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'retry times :',retry,",result:",ret)
                                 retry +=1
@@ -293,11 +293,11 @@ def analyze(buffer,plasma_id,ws,timeStamp):
             data = {'image_base64':base64_string,'time_stamp':timeStamp,'is_wonderful':isWonderful,'user_data':query['user_data'],'analyze_result':analyze_data}
         else:
             if isWonderful == 0:
-                data = {'image_base64':'','time_stamp':timeStamp,'is_wonderful':isWonderful,'user_data':query['user_data'],'analyze_result':analyze_data}
+                data = {'image_base64':'','time_stamp':timeStamp,'is_wonderful':0,'user_data':query['user_data'],'analyze_result':analyze_data}
             else:
                 jpg_as_text = base64.b64encode(buffer)
                 base64_string = jpg_as_text.decode('utf-8')
-                data = {'image_base64':base64_string,'time_stamp':timeStamp,'is_wonderful':isWonderful,'user_data':query['user_data'],'analyze_result':analyze_data}
+                data = {'image_base64':base64_string,'time_stamp':timeStamp,'is_wonderful':1,'user_data':query['user_data'],'analyze_result':analyze_data}
 
         
         jsonString = json.dumps(data)
@@ -321,7 +321,7 @@ def checkIsWonderful(analyze_data):
         primaryEmotion = faces[i]['emotion']['primary']
         if primaryEmotion == 'happy':
             happyCount+=1
-    if (total>15 and happyCount/total > 0.5):
+    if (total>8 and happyCount/total > 0.6):
         return 1
     else:
         return 0

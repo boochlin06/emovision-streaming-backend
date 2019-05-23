@@ -7,7 +7,8 @@ services:
         - "7080:80" 
         volumes:        
         - ./api:/docker_api     
-        - ./log:/var/log/nginx              
+        - ./log:/var/log/nginx
+        - api_data:/files          
         depends_on:
         - api
         networks: 
