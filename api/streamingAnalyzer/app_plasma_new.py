@@ -286,18 +286,18 @@ def analyze(buffer,plasma_id,ws,timeStamp):
         if res.response.status_code != 200:
             return
         analyze_data = json.loads(res.response.text)
-        isWonderful = checkIsWonderful(analyze_data)
+        #isWonderful = checkIsWonderful(analyze_data)
         if(query['always_return_image'] == '1'):
             jpg_as_text = base64.b64encode(buffer)
             base64_string = jpg_as_text.decode('utf-8')
-            data = {'image_base64':base64_string,'time_stamp':timeStamp,'is_wonderful':isWonderful,'user_data':query['user_data'],'analyze_result':analyze_data}
+            data = {'image_base64':base64_string,'time_stamp':timeStamp,'user_data':query['user_data'],'analyze_result':analyze_data}
         else:
-            if isWonderful == 0:
-                data = {'image_base64':'','time_stamp':timeStamp,'is_wonderful':0,'user_data':query['user_data'],'analyze_result':analyze_data}
+            if analyze_data['is_wonderful'] == 0:
+                data = {'image_base64':'','time_stamp':timeStamp,'user_data':query['user_data'],'analyze_result':analyze_data}
             else:
                 jpg_as_text = base64.b64encode(buffer)
                 base64_string = jpg_as_text.decode('utf-8')
-                data = {'image_base64':base64_string,'time_stamp':timeStamp,'is_wonderful':1,'user_data':query['user_data'],'analyze_result':analyze_data}
+                data = {'image_base64':base64_string,'time_stamp':timeStamp,'user_data':query['user_data'],'analyze_result':analyze_data}
 
         
         jsonString = json.dumps(data)

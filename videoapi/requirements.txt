@@ -4,7 +4,6 @@ billiard==3.5.0.3
 celery==4.2.1
 click==6.7
 Flask
-opencv-python
 itsdangerous==0.24
 Jinja2==2.10
 kombu==4.2.0
@@ -17,7 +16,6 @@ Werkzeug==0.14.1
 flask-uploads
 requests==2.21.0
 requests-toolbelt==0.9.1
-urllib3==1.24.1
 flask-session
 Flask-SQLAlchemy
 opencv-python

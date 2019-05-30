@@ -33,7 +33,7 @@ import cv2
 SPACE_LIMIT = 20 * 1000 * 1000 *1000
 TEST_API_KEY = 'sheshin'
 
-app = Flask(__name__,static_url_path='/files', static_folder='files')
+app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'wansam'
 app.config['UPLOADED_VIDEOS_DEST'] =  os.getcwd()+"/files/"
@@ -96,7 +96,7 @@ def add():
                 enableOutputJson = request.form.get('output_json')
             filename = videos.save(request.files['video_file'])
             _, file_extension = os.path.splitext(filename)
-            inputPath = os.getcwd()+"/files/"+filename
+            inputPath = app.config['UPLOADED_VIDEOS_DEST']+filename
             size = os.stat(inputPath).st_size
             if (file_extension != ".mp4"):
                 response["success"] = False
@@ -150,19 +150,19 @@ def delete_task(task_id):
             return json.dumps(response),400
         revoke(task_id,terminate=True)
         if (video.inputVideo is not None):
-            filePath = os.getcwd()+"/files/"+video.inputVideo
+            filePath = app.config['UPLOADED_VIDEOS_DEST']+video.inputVideo
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
                 app.logger.debug("The input file does not exist")
         if (video.outputVideo is not None):
-            filePath = os.getcwd()+"/files/"+video.outputVideo
+            filePath = app.config['UPLOADED_VIDEOS_DEST']+video.outputVideo
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
                 app.logger.debug("The output video file does not exist!")
         if (video.outputJson is not None):
-            filePath = os.getcwd()+"/files/"+video.outputJson
+            filePath = app.config['UPLOADED_VIDEOS_DEST']+video.outputJson
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
@@ -231,7 +231,7 @@ def list_tasks():
 def download_Video(task_id):
     response = {}
     try:
-        path = os.getcwd()+"/files/"
+        path = app.config['UPLOADED_VIDEOS_DEST']
         video = Video.query.filter_by(taskId=task_id).first()
         if video is None:
             response["success"] = False
@@ -245,8 +245,8 @@ def download_Video(task_id):
             filename = video.outputVideo
             app.logger.debug('download:'+filename)
             response = make_response(send_from_directory(path, filename))
-            response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
-                quote(filename))
+            # response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
+                # quote(filename))
             #start, end = get_range(request)
             return response
             # return render_template('ws-test.html',video="files/"+filename)
@@ -260,58 +260,11 @@ def download_Video(task_id):
         response["error"] = {"code":0,"message":"UNKNOW"}
         return json.dumps(response),500
 
-def partial_response(path, start, end=None):
-    file_size = os.path.getsize(path)
-
-    # Determine (end, length)
-    if end is None:
-        end = start + BUFF_SIZE - 1
-    end = min(end, file_size - 1)
-    end = min(end, start + BUFF_SIZE - 1)
-    length = end - start + 1
-    app.logger.debug("file size:"+str(file_size)+",length:"+str(length)+",start:"+str(start)+",end:"+str(end))
-
-    # Read file
-    with open(path, 'rb') as fd:
-        fd.seek(start)
-        bytes = fd.read(length)
-    assert len(bytes) == length
-
-    response = Response(
-        bytes,
-        206,
-        mimetype=mimetypes.guess_type(path)[0],
-        direct_passthrough=True,
-    )
-    response.headers.add(
-        'Content-Range', 'bytes {0}-{1}/{2}'.format(
-            start, end, file_size,
-        ),
-    )
-    response.headers.add(
-        'Accept-Ranges', 'bytes'
-    )
-    return response
-
-def get_range(request):
-    app.logger.debug("Range :"+str(request.headers.get('Range')))
-    range = request.headers.get('Range')
-    m = re.match('bytes=(?P<start>\d+)-(?P<end>\d+)?', str(range))
-    if m:
-        start = m.group('start')
-        end = m.group('end')
-        start = int(start)
-        if end is not None:
-            end = int(end)
-        return start, end
-    else:
-        return 0, None
-
 @app.route('/v1/video/download/json/<string:task_id>',methods=['GET'])
 def download_Json(task_id):
     response = {}
     try:
-        path = os.getcwd()+"/files/"
+        path = app.config['UPLOADED_VIDEOS_DEST']
         video = Video.query.filter_by(taskId=task_id).first()
         if video is None:
             response["success"] = False

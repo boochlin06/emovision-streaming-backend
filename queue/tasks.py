@@ -4,6 +4,7 @@ from celery import Celery
 from database import db
 from database import Video
 from database import Webhook
+from ffmpy import FFmpeg
 from flask import Flask
 import base64
 import cv2
@@ -29,11 +30,8 @@ CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localho
 
 tasks = Flask(__name__)
 tasks.config['SECRET_KEY'] = 'wansam'
-tasks.config['UPLOADED_VIDEOS_DEST'] =  os.getcwd()
 celery = Celery('tasks', broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BACKEND)
 celery.config_from_object(__name__)
-videos = UploadSet('videos',ALL)
-configure_uploads(tasks, videos)
 
 TEST_API_KEY = 'sheshin'
 tasks.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -48,12 +46,16 @@ config = configparser.ConfigParser()
 config.read(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'config', 'analyze.ini'))
 analyzeAddress=config.get('DEFAULT','analyzeAddress')
 plasmaPath = config.get('DEFAULT','plasmaPath')
+enable_output_264 = False
 
+video_folder = "/files/"
+video_end_with = "-out.mp4"
+json_end_with = "-out.json"
 
 @celery.task(name='tasks.analyze.file',bind= True)
-def analyze_file(self,inputfilename,output_json):
+def analyze_file(self,inputfilename,enable_output_json):
     # filename = videos.save(requestFile)
-    inputPath = "/files/"+inputfilename
+    inputPath = video_folder+inputfilename
     statinfo = os.stat(inputPath)
 
     print("task: file size:",statinfo, ",path:",inputfilename, ",id:",self.request.id)
@@ -64,16 +66,16 @@ def analyze_file(self,inputfilename,output_json):
     try:
         file_name, file_extension = os.path.splitext(inputfilename)
         
-        exists = Video.query.filter_by(outputVideo=file_name+ "-out.mp4")
+        exists = Video.query.filter_by(outputVideo=file_name+ video_end_with)
         if (exists != None):
             file_name = file_name+"_"+str(self.request.id)
-        outputName = process(inputPath,file_name,output_json==1)
+        outputName = process(inputPath,file_name,enable_output_json==1)
         os.remove(inputPath)
 
         video.state= "FINISH"
-        video.outputVideo = outputName + "-out.mp4"
-        if (output_json==1):
-            video.outputJson = outputName + "-out.json"
+        video.outputVideo = outputName + video_end_with
+        if (enable_output_json==1):
+            video.outputJson = outputName + video_end_with
         video.endTime = millis()
         db.session.commit()
         post_webhook(video)
@@ -87,7 +89,7 @@ def analyze_file(self,inputfilename,output_json):
 
 
 @celery.task(name='tasks.analyze.url',bind= True)
-def analyze_url(self,video_url,output_json):
+def analyze_url(self,video_url,enable_output_json):
     # filename = videos.save(requestFile)
     inputPath = video_url
 
@@ -100,17 +102,21 @@ def analyze_url(self,video_url,output_json):
         path = urlparse.urlsplit(video_url).path
         dirname, basename = os.path.split(path)
         file_name, file_extension = os.path.splitext(basename)
-        exists = Video.query.filter_by(outputVideo=file_name+ "-out.mp4")
+        exists = Video.query.filter_by(outputVideo=file_name+ video_end_with)
         if (exists != None):
             file_name = file_name+"_"+str(self.request.id)
-        outputName = process(video_url,file_name,output_json==1)
-        video.state= "FINISH"
-        video.outputVideo = outputName + "-out.mp4"
-        if (output_json==1):
-            video.outputJson = outputName + "-out.json"
+        outputName = process(video_url,file_name,enable_output_json==1)
+        outputFilePath = video_folder+file_name + video_end_with
+        if os.path.isfile(outputFilePath):
+            video.state= "FINISH"
+            video.outputVideo = outputName + video_end_with
+        else:
+            video.state="ERROR"
+        if (enable_output_json==1):
+            video.outputJson = outputName + json_end_with
         video.endTime = millis()
         db.session.commit()
-        post_webhook(video)
+        # post_webhook(video)
     except:
         video.state= "ERROR"
         db.session.commit()
@@ -129,8 +135,8 @@ def post_webhook(video):
 
 
 def process(source,file_name, enable_output_json):
-    outputName = "/files/"+file_name + "-out.mp4"
-    outputJsonName = "/files/"+file_name + "-out.json"
+    output_temp_path = video_folder+file_name + "-temp.mp4"
+    outputJsonName = video_folder+file_name + json_end_with
     if (enable_output_json):
         json_file = open(outputJsonName, "w+")
         json_file.write("[")
@@ -145,9 +151,9 @@ def process(source,file_name, enable_output_json):
     count = 0
     start_time = datetime.datetime.now()
 
-    fourcc = cv2.VideoWriter_fourcc('h','2','6','4')
-    videoWriter = cv2.VideoWriter(outputName,int(fourcc), fps,(int(width),int(height)),True)
-    client = plasma.connect("/dev/shm/plasma", "", 0)
+    fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
+    videoWriter = cv2.VideoWriter(output_temp_path,int(fourcc), fps,(int(width),int(height)),True)
+    client = plasma.connect(plasmaPath, "", 0)
     count =0
     while(count < total_frames):
         count += 1
@@ -202,7 +208,23 @@ def process(source,file_name, enable_output_json):
         json_file.write("]")
         json_file.close()
     logging.debug("")
-    # remove orignal video
+    if enable_output_264:
+        # x264
+        ff = FFmpeg(
+            inputs={output_temp_path:None},
+            outputs={video_folder+file_name + video_end_with:'-c:v libx264 -an -crf 18'}
+        )
+        print(ff.cmd)
+        ff.run()
+        if os.path.exists(output_temp_path):
+            os.remove(output_temp_path)
+        else:
+            print("The file does not exist")
+    else:
+        if os.path.exists(output_temp_path):
+            os.rename(output_temp_path,video_folder+file_name + video_end_with)
+        else:
+            print("The file does not exist")
     return file_name
 
 def millis():

@@ -8,11 +8,11 @@ pytz==2018.3
 redis==2.10.6
 tornado==5.0.2
 vine==1.1.4
-opencv-python
+opencv-python==4.1.0.25
 Flask-SQLAlchemy
 flask-uploads
 Flask
 requests==2.21.0
 requests-toolbelt==0.9.1
-
 pyarrow==0.11.1
+ffmpy==0.2.2
