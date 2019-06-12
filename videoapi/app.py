@@ -30,7 +30,9 @@ except ImportError:
     import urllib.parse as urlparse
 import cv2
 
-SPACE_LIMIT = 20 * 1000 * 1000 *1000
+MB = 1 << 20
+BUFF_SIZE = 10 * MB
+SPACE_LIMIT = 20 * 1000 * MB
 TEST_API_KEY = 'sheshin'
 
 app = Flask(__name__)
@@ -51,8 +53,6 @@ Session(app)
 videos = UploadSet('videos',ALL)
 configure_uploads(app, videos)
 
-MB = 1 << 20
-BUFF_SIZE = 10 * MB
 if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.error')
     app.logger.handlers = gunicorn_logger.handlers
@@ -128,12 +128,12 @@ def add():
     
 
 def validTotalVideosSize(newVideoSize):
-    app.logger.debug("new video size d :"+str(newVideoSize))
+    app.logger.info("new video size d :"+str(newVideoSize))
     totalSize = Video.query.with_entities(func.sum(Video.size)).all()
     if totalSize[0][0] is not None:
         if (newVideoSize + int(totalSize[0][0]) > SPACE_LIMIT):
             return False
-        app.logger.debug("total videos size:"+str(totalSize[0][0]))
+        app.logger.info("total videos size:"+str(totalSize[0][0]))
         return True
     else:
         return True
@@ -154,19 +154,19 @@ def delete_task(task_id):
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
-                app.logger.debug("The input file does not exist")
+                app.logger.error(str(task_id)+":The input file does not exist")
         if (video.outputVideo is not None):
             filePath = app.config['UPLOADED_VIDEOS_DEST']+video.outputVideo
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
-                app.logger.debug("The output video file does not exist!")
+                app.logger.error(str(task_id)+"The output video file does not exist!")
         if (video.outputJson is not None):
             filePath = app.config['UPLOADED_VIDEOS_DEST']+video.outputJson
             if os.path.exists(filePath):
                 os.remove(filePath)
             else:
-                app.logger.debug("The output json does not exist!")
+                app.logger.error(str(task_id)+"The output json does not exist!")
         db.session.delete(video)
         db.session.commit()
         response["success"] = True
@@ -243,10 +243,10 @@ def download_Video(task_id):
             return json.dumps(response),400
         if (video.outputVideo is not None):
             filename = video.outputVideo
-            app.logger.debug('download:'+filename)
-            response = make_response(send_from_directory(path, filename))
-            # response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
-                # quote(filename))
+            app.logger.info('download:'+filename)
+            response = make_response(send_from_directory(path, filename,as_attachment=True))
+            response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
+                quote(filename))
             #start, end = get_range(request)
             return response
             # return render_template('ws-test.html',video="files/"+filename)
@@ -276,7 +276,7 @@ def download_Json(task_id):
             return json.dumps(response),400
         if (video.outputJson is not None):
             filename = video.outputJson
-            app.logger.debug('download:'+filename)
+            app.logger.info(str(task_id)+',download:'+filename)
             response = make_response(send_from_directory(path, filename))
             response.headers["Content-Disposition"] = "attachment; filename={0}; filename*=utf-8''{0}".format(
                 quote(filename))
@@ -286,7 +286,7 @@ def download_Json(task_id):
         return json.dumps(response),400
     except Exception as e:
         app.logger.error(traceback.format_exc())
-        app.logger.error(str(e))
+        app.logger.error(str(task_id)+str(e))
         response["success"] = False
         response["error"] = {"code":0,"message":"UNKNOW"}
         return json.dumps(response),500

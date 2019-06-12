@@ -59,11 +59,15 @@ def analyze_file(self,inputfilename,enable_output_json):
     statinfo = os.stat(inputPath)
 
     print("task: file size:",statinfo, ",path:",inputfilename, ",id:",self.request.id)
-    # time.sleep(3)
-    video = Video.query.filter_by(taskId=self.request.id).first()
-    video.state = "PROCESSING"
-    db.session.commit()
+    
     try:
+        video = Video.query.filter_by(taskId=self.request.id).first()
+        if (video == None):
+            time.sleep(3)
+            video = Video.query.filter_by(taskId=self.request.id).first()
+        video.state = "PROCESSING"
+        db.session.commit()
+    
         file_name, file_extension = os.path.splitext(inputfilename)
         
         exists = Video.query.filter_by(outputVideo=file_name+ video_end_with)
@@ -78,8 +82,9 @@ def analyze_file(self,inputfilename,enable_output_json):
             video.outputJson = outputName + video_end_with
         video.endTime = millis()
         db.session.commit()
-        post_webhook(video)
+        #post_webhook(video)
     except:
+        video = Video.query.filter_by(taskId=self.request.id).first()
         video.state= "ERROR"
         db.session.commit()
         print(traceback.format_exc())
@@ -94,30 +99,43 @@ def analyze_url(self,video_url,enable_output_json):
     inputPath = video_url
 
     print("task:path:",video_url, ",id:",self.request.id)
-    # time.sleep(3)
-    video = Video.query.filter_by(taskId=self.request.id).first()
-    video.state = "PROCESSING"
-    db.session.commit()
+    time.sleep(3)
     try:
+        video = Video.query.filter_by(taskId=self.request.id).first()
+        if (video == None):
+            time.sleep(3)
+            video = Video.query.filter_by(taskId=self.request.id).first()
+        video.state = "PROCESSING"
+        db.session.commit()
+    
         path = urlparse.urlsplit(video_url).path
         dirname, basename = os.path.split(path)
         file_name, file_extension = os.path.splitext(basename)
         exists = Video.query.filter_by(outputVideo=file_name+ video_end_with)
-        if (exists != None):
-            file_name = file_name+"_"+str(self.request.id)
-        outputName = process(video_url,file_name,enable_output_json==1)
+        
+        file_name = file_name+"_"+str(self.request.id)
+        result = process(video_url,file_name,enable_output_json==1)
+        tasks.logger.info("result:"+str(result))
         outputFilePath = video_folder+file_name + video_end_with
         if os.path.isfile(outputFilePath):
-            video.state= "FINISH"
-            video.outputVideo = outputName + video_end_with
+            if (result):
+                video.state= "FINISH"
+                video.outputVideo = file_name + video_end_with
+                video.size = os.path.getsize(outputFilePath)
+            else:
+                video.state="ERROR"
+                video.outputVideo = file_name + video_end_with
+                video.size = os.path.getsize(outputFilePath)
         else:
+            video.size = 0
             video.state="ERROR"
         if (enable_output_json==1):
-            video.outputJson = outputName + json_end_with
+            video.outputJson = file_name + json_end_with
         video.endTime = millis()
         db.session.commit()
         # post_webhook(video)
     except:
+        video = Video.query.filter_by(taskId=self.request.id).first()
         video.state= "ERROR"
         db.session.commit()
         print("analyze_url:",traceback.format_exc())
@@ -150,6 +168,7 @@ def process(source,file_name, enable_output_json):
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
     count = 0
     start_time = datetime.datetime.now()
+    tasks.logger.info("total_frames:"+str(total_frames)+",width:"+str(width)+",fps:"+str(fps))
 
     fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
     videoWriter = cv2.VideoWriter(output_temp_path,int(fourcc), fps,(int(width),int(height)),True)
@@ -163,18 +182,18 @@ def process(source,file_name, enable_output_json):
         
         # _, img_encoded = cv2.imencode('.jpg', img)
 
-        while True:
-            try:
-                item = client.put(img)
-                plasma_id = item.binary()
-                ret_address = base64.b64encode(plasma_id).decode('utf-8')
-                tmp_id = millis()
-                m = MultipartEncoder(
-                    fields={'image_type': 'jpg',
-                            'tmp_id': str(tmp_id),
-                            'plasma_id': ret_address}
-                )
-                r = requests.post(url, data=m, headers={'Content-Type': m.content_type})
+        try:
+            item = client.put(img)
+            plasma_id = item.binary()
+            ret_address = base64.b64encode(plasma_id).decode('utf-8')
+            tmp_id = millis()
+            m = MultipartEncoder(
+                fields={'image_type': 'jpg',
+                        'tmp_id': str(tmp_id),
+                        'plasma_id': ret_address}
+            )
+            r = requests.post(url, data=m, headers={'Content-Type': m.content_type})
+            if (r.status_code == requests.codes.ok):
                 data = r.json()
 
                 if (enable_output_json):
@@ -189,20 +208,28 @@ def process(source,file_name, enable_output_json):
                         rect = face["face_rectangle"]
                         emotidraw.draw_face_rect(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
                         emotidraw.draw_face_emoji(img,rect["left"],rect["top"],rect["width"],rect["height"],face["emotion"]["primary"])
-
-                videoWriter.write(img)
-                duration = datetime.datetime.now()- start_time
-                print("%d / %d  frame took %s. remain %s" % (count, total_frames, duration,(total_frames-count)*duration/count ), end="\r")
-            except Exception as e: 
-                tasks.logger.error(str(e))
-                print(traceback.format_exc())
-                tasks.logger.error(traceback.format_exc())
-                break
-                # continue
+            else:
+                tasks.logger.error("response not 200")
+            videoWriter.write(img)
+            duration = datetime.datetime.now()- start_time
+            print("%d / %d  frame took %s. remain %s" % (count, total_frames, duration,(total_frames-count)*duration/count ), end="\r")
+        except Exception as e: 
+            tasks.logger.error(str(e))
+            print(traceback.format_exc())
+            tasks.logger.error(traceback.format_exc())
             break
+            # continue
 
     videoWriter.release()
     cap.release()
+
+    if os.path.exists(output_temp_path):
+        if count < total_frames*0.9 or os.path.getsize(output_temp_path) < 500:
+            os.remove(output_temp_path)
+            return False
+    else:
+        tasks.logger.error("temp file not exist")
+        return False
 
     if (enable_output_json):
         json_file.write("]")
@@ -219,13 +246,15 @@ def process(source,file_name, enable_output_json):
         if os.path.exists(output_temp_path):
             os.remove(output_temp_path)
         else:
-            print("The file does not exist")
+            tasks.logger.error("The file does not exist")
+            return False
     else:
         if os.path.exists(output_temp_path):
             os.rename(output_temp_path,video_folder+file_name + video_end_with)
         else:
-            print("The file does not exist")
-    return file_name
+            tasks.logger.error("The file does not exist")
+            return False
+    return True
 
 def millis():
     return int(round(time.time() * 1000))

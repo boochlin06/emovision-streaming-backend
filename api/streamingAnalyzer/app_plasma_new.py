@@ -78,14 +78,14 @@ def streaming(ws):
     query = dict(parse_qsl(ws.environ['QUERY_STRING']))
     try:
         if query['url'] is None:
-            ws.close()
+            sendErrorMessage(ws,0)
             return
         query['feature']
         query['always_return_image']
         query['user_data']
     except Exception as e:
         print (e)
-        ws.close()
+        sendErrorMessage(ws,0)
         return
     print('time:',datetime.datetime.now(),'rtsp path:',query['url'],'user_data:',query['user_data'] , ',analyze address:',analyzeAddress,',plasmaPath:',plasmaPath)
     comsumerJobs = [gevent.spawn(consumer,i) for i in range(int(workerNume))]
@@ -110,6 +110,16 @@ def consumer(id):
             print(e)
     print(analyzeItem.ws.id[:7],'time:',datetime.datetime.now(),'close consumer,',id)
 
+def sendErrorMessage(ws, timeStamp):
+    try:
+        query = dict(parse_qsl(ws.environ['QUERY_STRING']))
+        data = {'user_data':query['user_data'],'time_stamp':timeStamp,"result_code":"0","message":"close"}
+        jsonString = json.dumps(data)
+        ws.send(jsonString)
+        ws.close()
+    except:
+        ws.close()
+        return
 
 class AnalyzeItem():
     def __init__(self, buffer, plasmaId, ws, item ,timeStamp):
@@ -129,7 +139,7 @@ def svaeVideoFrame(ws):
             camera = cv2.VideoCapture(query['url'])    
             if not camera.isOpened():
                 retry += 1
-                gevent.sleep(10000)
+                gevent.sleep(3)
                 print('Could not start camera:retry:',retry)
                 if (retry>3):
                     raise RuntimeError('Could not start camera.')
@@ -154,107 +164,114 @@ def svaeVideoFrame(ws):
         print(e)
         print(ws.id[:7],'time:',datetime.datetime.now(),",connect init fail")
         camera.release()
-        ws.close()
+        sendErrorMessage(ws,0)
         return
 
     client = plasma.connect(plasmaPath, "", 0)
     while True:
-        msg = ws.receive()
-        if ws.connected == False:
-            print(ws.id[:7],'time:',datetime.datetime.now(),'avg fps',str(frameCount/((millis()-frameCountStartTime)/1000)))
-            camera.release()
-            print(ws.id[:7],'time:',datetime.datetime.now(),'close the websocket')
-            ws.close()
-            break
-        if msg is not None:
-            
-            if not camera.isOpened():
-                print('Could not start camera:')
-                raise RuntimeError('Could not start camera.')
-            else:
-                fps = camera.get(cv2.CAP_PROP_FPS)
-                frameGapTime = 1.0/fps * 1000
-                # handshakeFrame = int(handshakeBufferTime/frameGapTime)+1
-                requestSkipFrame = fps/requestFrameFps
-
-                # speed changed
-                if (q.qsize() > workerNume*15 ):
-                    autoSpeedChangeFrame+=3
-                elif q.qsize() > workerNume*12 and q.qsize() <=workerNume*15:
-                    autoSpeedChangeFrame+=2
-                elif q.qsize() > workerNume*10 and q.qsize() <=workerNume*12:
-                    autoSpeedChangeFrame+=1
-                elif q.qsize() <= workerNume*10:
-                    autoSpeedChangeFrame-=2
-                    if autoSpeedChangeFrame < 0:
-                        autoSpeedChangeFrame = 0
+        try:
+            msg = ws.receive()
+            if ws.connected == False:
+                print(ws.id[:7],'time:',datetime.datetime.now(),'avg fps',str(frameCount/((millis()-frameCountStartTime)/1000)))
+                camera.release()
+                print(ws.id[:7],'time:',datetime.datetime.now(),'close the websocket')
+                sendErrorMessage(ws,0)
+                break
+            if msg is not None:
                 
-                if autoSpeedChangeFrame > fps/requestFrameFps*2:
-                    autoSpeedChangeFrame = fps/requestFrameFps*2
+                if not camera.isOpened():
+                    print('Could not start camera:')
+                    raise RuntimeError('Could not start camera.')
+                else:
+                    fps = camera.get(cv2.CAP_PROP_FPS)
+                    frameGapTime = 1.0/fps * 1000
+                    # handshakeFrame = int(handshakeBufferTime/frameGapTime)+1
+                    requestSkipFrame = fps/requestFrameFps
+
+                    # speed changed
+                    if (q.qsize() > workerNume*15 ):
+                        autoSpeedChangeFrame+=3
+                    elif q.qsize() > workerNume*12 and q.qsize() <=workerNume*15:
+                        autoSpeedChangeFrame+=2
+                    elif q.qsize() > workerNume*10 and q.qsize() <=workerNume*12:
+                        autoSpeedChangeFrame+=1
+                    elif q.qsize() <= workerNume*10:
+                        autoSpeedChangeFrame-=2
+                        if autoSpeedChangeFrame < 0:
+                            autoSpeedChangeFrame = 0
                     
+                    if autoSpeedChangeFrame > fps/requestFrameFps*2:
+                        autoSpeedChangeFrame = fps/requestFrameFps*2
 
-                requestSkipFrame = fps/requestFrameFps+autoSpeedChangeFrame
-                
+                    requestSkipFrame = fps/requestFrameFps+autoSpeedChangeFrame
 
-                current = camera.get(cv2.CAP_PROP_POS_MSEC)
-                current_frame = camera.get(cv2.CAP_PROP_POS_FRAMES)
+                    current = camera.get(cv2.CAP_PROP_POS_MSEC)
+                    current_frame = camera.get(cv2.CAP_PROP_POS_FRAMES)
+                    skipFrams = ((millis()-startTime)-current)/frameGapTime
 
-                print(ws.id[:7],'time:',datetime.datetime.now(),",q size:",q.qsize()
-                ,",current fps:"+str(fps/requestSkipFrame),',pos',current_frame,"rece siez:",ws.recv_queue.qsize(),",msg:",msg)
-                if (total_frame != 0 and current_frame> total_frame):
-                    print(ws.id[:7],'time:',datetime.datetime.now(),'finish the task,current_frame',current_frame,)
-                    ws.close()
-                if (frameCount%fps==0):
-                    requestSkipFrame = requestSkipFrame - 1
-                skipFrams = ((millis()-startTime)-current)/frameGapTime
-                if (skipFrams < 1):
-                    gevent.sleep(frameGapTime/1000)
-                    # print(ws.id[:7],'time:',datetime.datetime.now(),'skipFrams < 1')
-                    continue
-
-                elif(skipFrams < rtspFrameBuffer and skipFrams > 1):
-                    skipedFrame = 0
-                    while (skipFrams < requestSkipFrame):
-                        skipedFrame +=1
-                        ret = camera.grab()
-                        # print(ws.id[:7],'time:',datetime.datetime.now(),'skipFrams < ',requestSkipFrame)
+                    print(ws.id[:7],'time:',datetime.datetime.now(),",q size:",q.qsize()
+                    ,",current fps:"+str(fps/requestSkipFrame),',pos',current_frame,"rece siez:",ws.recv_queue.qsize(),",skipFrams:",skipFrams)
+                    if (total_frame != 0 and current_frame> total_frame):
+                        print(ws.id[:7],'time:',datetime.datetime.now(),'finish the task,current_frame',current_frame,)
+                        sendErrorMessage(ws,current)
+                    if (frameCount%fps==0):
+                        requestSkipFrame = requestSkipFrame - 1
+                    if (skipFrams < 1):
                         gevent.sleep(frameGapTime/1000)
-                        skipFrams = ((millis()-startTime)-current)/frameGapTime
-                    if (skipFrams > rtspFrameBuffer):
-                        print(ws.id[:7],'time:',datetime.datetime.now(),'skipedFrame > rtspFrameBuffer:',skipFrams ,",rtspFrameBuffer:",rtspFrameBuffer)
+                        #print(ws.id[:7],'time:',datetime.datetime.now(),'skipFrams < 1')
                         continue
-                    count = skipedFrame
-                    while(True):
-                        count+=1
-                        if count%requestSkipFrame==0:
-                            ret ,img = camera.read()
-                            retry = 0
-                            while(ret == False and retry < 3):
-                                gevent.sleep(2)
-                                ret ,img = camera.read()
-                                print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'retry times :',retry,",result:",ret)
-                                retry +=1
-                            if (ret == True) :
-                                item = client.put(img)
-                                plasma_id = item.binary()
-                                buffer = cv2.imencode('.jpg', img)[1].tobytes()
-                                frameCount+=1
-
-                                print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,',plasma id:',plasma_id,', q size',q.qsize(),',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC))
-
-                                q.put(AnalyzeItem(buffer,plasma_id,ws,item,camera.get(cv2.CAP_PROP_POS_MSEC)))
-
-                                gevent.sleep(0)
-                                # print(ws.id[:7],'time:',datetime.datetime.now(),'sleep a muntout:',ret)
-                                # gevent.sleep(handshakeBufferTime/2/1000)
-                            else :
-                                print(ws.id[:7],'time:',datetime.datetime.now(),'get frame camera fail,count:',count)
-                                ws.close()
-                                break
-                        elif(count > skipFrams):
-                            break
-                        else:
+                    #elif(skipFrams < rtspFrameBuffer and skipFrams >= 1):
+                    else:
+                        skipedFrame = 0
+                        while (skipFrams < requestSkipFrame):
+                            skipedFrame +=1
                             ret = camera.grab()
+                            # print(ws.id[:7],'time:',datetime.datetime.now(),'skipFrams < ',requestSkipFrame)
+                            gevent.sleep(frameGapTime/1000)
+                            skipFrams = ((millis()-startTime)-current)/frameGapTime
+                        # if (skipFrams > rtspFrameBuffer):
+                        #     print(ws.id[:7],'time:',datetime.datetime.now(),'skipedFrame > rtspFrameBuffer:',skipFrams ,",rtspFrameBuffer:",rtspFrameBuffer)
+                        #     continue
+                        count = skipedFrame
+                        print(ws.id[:7],'time:',datetime.datetime.now(),'skipedFrame :',skipedFrame,'skipFrams :',skipFrams)
+                        while(True):
+                            if count%requestSkipFrame==0:
+                                ret ,img = camera.read()
+                                retry = 0
+                                while(ret == False and retry < 3):
+                                    gevent.sleep(2)
+                                    ret ,img = camera.read()
+                                    print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'retry times :',retry,",result:",ret)
+                                    retry +=1
+                                if (ret == True) :
+                                    item = client.put(img)
+                                    plasma_id = item.binary()
+                                    buffer = cv2.imencode('.jpg', img)[1].tobytes()
+                                    frameCount+=1
+
+                                    if (q.qsize() < workerNume *20):
+                                        q.put(AnalyzeItem(buffer,plasma_id,ws,item,camera.get(cv2.CAP_PROP_POS_MSEC)))
+                                        print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,',plasma id:',plasma_id,', q size',q.qsize(),',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC))
+
+                                    gevent.sleep(0)
+                                    # print(ws.id[:7],'time:',datetime.datetime.now(),'sleep a muntout:',ret)
+                                    # gevent.sleep(handshakeBufferTime/2/1000)
+                                else :
+                                    print(ws.id[:7],'time:',datetime.datetime.now(),'get frame camera fail,count:',count)
+                                    sendErrorMessage(ws,camera.get(cv2.CAP_PROP_POS_MSEC))
+
+                                    break
+                            elif(count > skipFrams):
+                                break
+                            else:
+                                ret = camera.grab()
+                        
+                            count+=1
+        except Exception as e:
+            sendErrorMessage(ws,0)
+            traceback.print_exc()
+            print(ws.id[:7],'time:',datetime.datetime.now(),str(e))
+
 
 def analyze(buffer,plasma_id,ws,timeStamp):
     timeout = gevent.Timeout(timeOutLimit)
@@ -282,8 +299,8 @@ def analyze(buffer,plasma_id,ws,timeStamp):
         print(ws.id[:7],'time:',datetime.datetime.now(),',analyze start,q size:',q.qsize(),',tmp id:',tmp_id,'pid:',plasma_id)
         req = grequests.post(analyzeAddress,data=m, headers={'Content-Type': m.content_type},timeout=timeOutLimit)
         res = req.send()
-        print(ws.id[:7],'time:',datetime.datetime.now(),',analyze post finish,',res.response,",q.qsize:",q.qsize(),'tmp id:',tmp_id,',pid:',plasma_id)
         if res.response.status_code != 200:
+            print(ws.id[:7],'time:',datetime.datetime.now(),',analyze post error,',res.response,",q.qsize:",q.qsize(),'tmp id:',tmp_id,',pid:',plasma_id)
             return
         analyze_data = json.loads(res.response.text)
         #isWonderful = checkIsWonderful(analyze_data)
@@ -302,6 +319,8 @@ def analyze(buffer,plasma_id,ws,timeStamp):
         
         jsonString = json.dumps(data)
         ws.send(jsonString)
+        print(ws.id[:7],'time:',datetime.datetime.now(),',analyze post finish,',res.response,",q.qsize:",q.qsize(),'tmp id:',tmp_id,',pid:',plasma_id)
+        gevent.sleep(0)
     except Timeout as t:
         print(ws.id[:7],'time:',datetime.datetime.now(),'time out:',t,',tmp id:',tmp_id)
     except Exception as e:
