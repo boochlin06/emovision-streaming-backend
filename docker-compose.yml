@@ -20,7 +20,7 @@ services:
         working_dir: /docker_api/streamingAnalyzer
         ipc: "host"
         # command: uwsgi --master --http :5054 --http-websockets --http-timeout 600 --websocket-pong-tolerance 3600 --gevent 100 --wsgi app_plasma_new:app --py-autoreload 1
-        command: uwsgi --master --http :5050 --http-websockets --http-connect-timeout 600 --socket-timeout 600 --http-timeout 600 --websocket-pong-tolerance 3600 --gevent 100 --wsgi app_plasma_new:app --py-autoreload 1
+        command: uwsgi --master --http :5050 --http-websockets --http-connect-timeout 600 --socket-timeout 600 --http-timeout 600 --websocket-pong-tolerance 3600 --gevent 100 --wsgi app_new:app --py-autoreload 1
         volumes:
         - ./api:/docker_api
         ports:

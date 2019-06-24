@@ -1,7 +1,8 @@
 
 import cv2
 
-cap = cv2.VideoCapture('rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=3&subtype=0&starttime=2019_04_26_08_09_00&endtime=2019_04_26_08_10_00')
+import datetime
+cap = cv2.VideoCapture('rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=88&subtype=0&starttime=2019_06_12_08_10_00&endtime=2019_06_12_08_55_00')
 # cap = cv2.VideoCapture('output.avi')
 # cap = cv2.VideoCapture('Minions_banana.mp4')
 
@@ -26,15 +27,15 @@ outputName="output.mp4"
 FRAME_NOW = cap.get(cv2.CAP_PROP_POS_FRAMES)
 print('当前帧数', FRAME_NOW)  # 当前帧数 122.0
 fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
-videoWriter = cv2.VideoWriter(outputName,int(fourcc), fps,(int(frame_width),int(frame_height)),True)
+# videoWriter = cv2.VideoWriter(outputName,int(fourcc), fps,(int(frame_width),int(frame_height)),True)
 while True:
     ret, frame = cap.read()
     FRAME_NOW = cap.get(cv2.CAP_PROP_POS_FRAMES)  # 当前帧数
     fps = cap.get(cv2.CAP_PROP_FPS)
     timestamp = cap.get(cv2.CAP_PROP_POS_MSEC)
-    videoWriter.write(frame)
-    print('当前帧数', FRAME_NOW,",fps:",fps,", timestamp",(timestamp/1000),',result:',ret)
+    #videoWriter.write(frame)
+    print("time:",datetime.datetime.now(),',当前帧数', FRAME_NOW,",fps:",fps,", timestamp",(timestamp/1000),',result:',ret)
 
-videoWriter.release()
+#videoWriter.release()
 cap.release()
 cv2.destroyAllWindows()

@@ -115,6 +115,7 @@ def sendErrorMessage(ws, timeStamp):
         query = dict(parse_qsl(ws.environ['QUERY_STRING']))
         data = {'user_data':query['user_data'],'time_stamp':timeStamp,"result_code":"0","message":"close"}
         jsonString = json.dumps(data)
+        print(ws.id[:7],'time:',datetime.datetime.now(),"rtsp:",query['url'],', end message:',jsonString)
         ws.send(jsonString)
         ws.close()
     except:
@@ -147,16 +148,16 @@ def svaeVideoFrame(ws):
                 break
        
         fps = camera.get(cv2.CAP_PROP_FPS)
+        buffer_size = camera.get(cv2.CAP_PROP_BUFFERSIZE)
         total_frame = camera.get(cv2.CAP_PROP_FRAME_COUNT)
 
-        print(ws.id[:7],'time:',datetime.datetime.now(),'rtsp path:',query['url'],",fps:",fps,",total frame:",total_frame)
+        print(ws.id[:7],'time:',datetime.datetime.now(),'rtsp path:',query['url'],",fps:",fps,",total frame:",total_frame,",buffer_size:",buffer_size)
         startTime = millis()
         # imgThumb = cv2.imread('benchmark_1080_61.jpg')
 
         frameCount =0
         frameCountStartTime = millis()
         frameGapTime = 1.0/fps * 1000
-        total_frame = camera.get(cv2.CAP_PROP_FRAME_COUNT)
         handshakeFrame = int(handshakeBufferTime/frameGapTime)+1
         requestSkipFrame = fps/requestFrameFps-handshakeFrame
         autoSpeedChangeFrame = 0
@@ -172,10 +173,10 @@ def svaeVideoFrame(ws):
         try:
             msg = ws.receive()
             if ws.connected == False:
-                print(ws.id[:7],'time:',datetime.datetime.now(),'avg fps',str(frameCount/((millis()-frameCountStartTime)/1000)))
+                print(ws.id[:7],'time:',datetime.datetime.now(),'avg fps',str(frameCount/((millis()-frameCount-startTime)/1000)))
                 camera.release()
                 print(ws.id[:7],'time:',datetime.datetime.now(),'close the websocket')
-                sendErrorMessage(ws,0)
+                # sendErrorMessage(ws,0)
                 break
             if msg is not None:
                 
@@ -210,7 +211,8 @@ def svaeVideoFrame(ws):
                     skipFrams = ((millis()-startTime)-current)/frameGapTime
 
                     print(ws.id[:7],'time:',datetime.datetime.now(),",q size:",q.qsize()
-                    ,",current fps:"+str(fps/requestSkipFrame),',pos',current_frame,"rece siez:",ws.recv_queue.qsize(),",skipFrams:",skipFrams)
+                    ,",current fps:"+str(fps/requestSkipFrame),',pos',current_frame,"rece size:",ws.recv_queue.qsize()\
+                        ,",msg:",msg,",skipFrams:",skipFrams)
                     if (total_frame != 0 and current_frame> total_frame):
                         print(ws.id[:7],'time:',datetime.datetime.now(),'finish the task,current_frame',current_frame,)
                         sendErrorMessage(ws,current)
@@ -241,7 +243,7 @@ def svaeVideoFrame(ws):
                                 while(ret == False and retry < 3):
                                     gevent.sleep(2)
                                     ret ,img = camera.read()
-                                    print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'retry times :',retry,",result:",ret)
+                                    print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,'fail,retry times :',retry,",result:",ret)
                                     retry +=1
                                 if (ret == True) :
                                     item = client.put(img)
@@ -251,9 +253,10 @@ def svaeVideoFrame(ws):
 
                                     if (q.qsize() < workerNume *20):
                                         q.put(AnalyzeItem(buffer,plasma_id,ws,item,camera.get(cv2.CAP_PROP_POS_MSEC)))
-                                        print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,',plasma id:',plasma_id,', q size',q.qsize(),',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC))
+                                        print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',count,',plasma id:',plasma_id\
+                                            ,', q size',q.qsize(),',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC))
 
-                                    gevent.sleep(0)
+                                    gevent.sleep(0.1)
                                     # print(ws.id[:7],'time:',datetime.datetime.now(),'sleep a muntout:',ret)
                                     # gevent.sleep(handshakeBufferTime/2/1000)
                                 else :
@@ -265,6 +268,18 @@ def svaeVideoFrame(ws):
                                 break
                             else:
                                 ret = camera.grab()
+                                gevent.sleep(0.05)
+                                retry = 0
+                                while(ret == False and retry < 3):
+                                    gevent.sleep(1)
+                                    ret = camera.grab()
+                                    print(ws.id[:7],'time:',datetime.datetime.now(),'camera grab frame :',count,'fail,retry times :',retry,",result:",ret)
+                                    retry +=1
+                                if (ret == False) :
+                                    print(ws.id[:7],'time:',datetime.datetime.now(),'camera grab frame :',count,' fail, q size',q.qsize()\
+                                        ,',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC))
+                                    sendErrorMessage(ws,camera.get(cv2.CAP_PROP_POS_MSEC))
+                                    break
                         
                             count+=1
         except Exception as e:
