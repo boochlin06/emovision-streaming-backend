@@ -43,10 +43,7 @@ services:
         ipc: "host"
         networks: 
         - web_nw
-    redis:
-        image: redis
-        networks: 
-        - web_nw
+    
     worker:
         build:
             context: queue
@@ -72,7 +69,34 @@ services:
             - redis
         networks: 
         - web_nw
-    
+    gateway:
+        build: ./gateway 
+        env_file:
+        - ./gateway/.env
+        ipc: host
+        volumes:
+        - ./gateway:/app 
+        restart: always
+        networks: 
+        - web_nw
+        depends_on:
+        - redis
+    loadbalancer:
+        build: ./load-balancer
+        tty: true
+        networks: 
+            - web_nw
+        ports:
+            - '5001:8080'
+        restart: always
+        volumes:
+        - ./load-balancer:/tmp
+        depends_on:
+        - gateway
+    redis:
+        image: redis
+        networks: 
+        - web_nw  
 volumes:
     api_data:
     db_data:

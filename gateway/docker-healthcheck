@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -X POST http://172.17.0.1:5001/emotibot/v2/analyze -F "plasma_id=`python plasma_put.py`" -F "feature=BODY" -F "feature=FACE"
