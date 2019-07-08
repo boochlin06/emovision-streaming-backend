@@ -1,0 +1,918 @@
+nohup: ignoring input
+Creating network "emovision-streaming_web_nw" with driver "bridge"
+The "api" service specifies a port on the host. If multiple containers for this service are created on a single host, the port will clash.
+Creating emovision-streaming_api_1  ... 
+Creating emovision-streaming_api_2  ... 
+Creating emovision-streaming_api_3  ... 
+Creating emovision-streaming_api_4  ... 
+Creating emovision-streaming_api_5  ... 
+Creating emovision-streaming_api_6  ... 
+Creating emovision-streaming_api_7  ... 
+Creating emovision-streaming_api_8  ... 
+Creating emovision-streaming_api_9  ... 
+Creating emovision-streaming_api_10 ... 
+Creating emovision-streaming_redis_1 ... 
+[5A[2KCreating emovision-streaming_api_7   ... [32mdone[0m[5B[9A[2KCreating emovision-streaming_api_3   ... [32mdone[0m[9B[1A[2KCreating emovision-streaming_redis_1 ... [32mdone[0m[1BCreating emovision-streaming_gateway_1 ... 
+Creating emovision-streaming_gateway_2 ... 
+Creating emovision-streaming_worker_1  ... 
+Creating emovision-streaming_videoapi_1 ... 
+Creating emovision-streaming_monitor_1  ... 
+Creating emovision-streaming_gateway_3 ... 
+[14A[2KCreating emovision-streaming_api_4      ... [32mdone[0m[14B[13A[2KCreating emovision-streaming_api_5      ... [32mdone[0m[13B[9A[2KCreating emovision-streaming_api_9      ... [32mdone[0m[9B[16A[2KCreating emovision-streaming_api_2      ... [32mdone[0m[16B[12A[2KCreating emovision-streaming_api_6      ... [32mdone[0m[12B[10A[2KCreating emovision-streaming_api_8      ... [32mdone[0m[10B[8A[2KCreating emovision-streaming_api_10     ... [32mdone[0m[8B[17A[2KCreating emovision-streaming_api_1      ... [32mdone[0m[17BCreating emovision-streaming_nginx_1    ... 
+[5A[2KCreating emovision-streaming_gateway_3  ... [32mdone[0m[5B[2A[2KCreating emovision-streaming_monitor_1  ... [32mdone[0m[2B[6A[2KCreating emovision-streaming_gateway_2  ... [32mdone[0m[6B[4A[2KCreating emovision-streaming_worker_1   ... [32mdone[0m[4B[7A[2KCreating emovision-streaming_gateway_1  ... [32mdone[0m[7BCreating emovision-streaming_loadbalancer_1 ... 
+[4A[2KCreating emovision-streaming_videoapi_1     ... [32mdone[0m[4B[2A[2KCreating emovision-streaming_nginx_1        ... [32mdone[0m[2B[1A[2KCreating emovision-streaming_loadbalancer_1 ... [32mdone[0m[1BAttaching to emovision-streaming_redis_1, emovision-streaming_api_7, emovision-streaming_api_3, emovision-streaming_api_4, emovision-streaming_api_5, emovision-streaming_api_9, emovision-streaming_api_2, emovision-streaming_api_6, emovision-streaming_api_8, emovision-streaming_api_10, emovision-streaming_api_1, emovision-streaming_monitor_1, emovision-streaming_worker_1, emovision-streaming_gateway_3, emovision-streaming_gateway_2, emovision-streaming_gateway_1, emovision-streaming_videoapi_1, emovision-streaming_nginx_1, emovision-streaming_loadbalancer_1
+[33mapi_7           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 08:59:53 2019] ***
+[33mapi_7           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[33mapi_7           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[33mapi_7           |[0m nodename: c7c9320d41c5
+[33mapi_7           |[0m machine: x86_64
+[33mapi_7           |[0m clock source: unix
+[33mapi_7           |[0m pcre jit disabled
+[33mapi_7           |[0m detected number of CPU cores: 32
+[33mapi_7           |[0m current working directory: /docker_api/streamingAnalyzer
+[33mapi_7           |[0m detected binary path: /usr/local/bin/uwsgi
+[33mapi_7           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33mapi_7           |[0m your memory page size is 4096 bytes
+[33mapi_7           |[0m detected max file descriptor number: 1048576
+[33mapi_7           |[0m - async cores set to 100 - fd table size: 1048576
+[33mapi_7           |[0m lock engine: pthread robust mutexes
+[36mredis_1         |[0m 1:C 03 Jul 2019 08:59:55.253 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+[36mredis_1         |[0m 1:C 03 Jul 2019 08:59:55.254 # Redis version=5.0.5, bits=64, commit=00000000, modified=0, pid=1, just started
+[36mredis_1         |[0m 1:C 03 Jul 2019 08:59:55.254 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+[33mapi_7           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[32mapi_3           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 08:59:53 2019] ***
+[32mapi_3           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[32mapi_3           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[32mapi_3           |[0m nodename: 47985cb4b9dc
+[32mapi_3           |[0m machine: x86_64
+[33mapi_7           |[0m uWSGI http bound on :5050 fd 4
+[33mapi_7           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:33779 (port auto-assigned) fd 3
+[33mapi_7           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35mapi_4           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 08:59:56 2019] ***
+[35mapi_4           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[35mapi_4           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[35mapi_4           |[0m nodename: f301ab7fa118
+[35mapi_4           |[0m machine: x86_64
+[35mapi_4           |[0m clock source: unix
+[35mapi_4           |[0m pcre jit disabled
+[35mapi_4           |[0m detected number of CPU cores: 32
+[35mapi_4           |[0m current working directory: /docker_api/streamingAnalyzer
+[35mapi_4           |[0m detected binary path: /usr/local/bin/uwsgi
+[35mapi_4           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32mapi_3           |[0m clock source: unix
+[32mapi_3           |[0m pcre jit disabled
+[32mapi_3           |[0m detected number of CPU cores: 32
+[32mapi_3           |[0m current working directory: /docker_api/streamingAnalyzer
+[32mapi_3           |[0m detected binary path: /usr/local/bin/uwsgi
+[32mapi_3           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32mapi_3           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.264 * Running mode=standalone, port=6379.
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.265 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.265 # Server initialized
+[33mapi_7           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[31mapi_5           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 08:59:57 2019] ***
+[31mapi_5           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[31mapi_5           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[31mapi_5           |[0m nodename: 3356af3c7881
+[31mapi_5           |[0m machine: x86_64
+[31mapi_5           |[0m clock source: unix
+[31mapi_5           |[0m pcre jit disabled
+[31mapi_5           |[0m detected number of CPU cores: 32
+[35mapi_4           |[0m your memory page size is 4096 bytes
+[35mapi_4           |[0m detected max file descriptor number: 1048576
+[35mapi_4           |[0m - async cores set to 100 - fd table size: 1048576
+[35mapi_4           |[0m lock engine: pthread robust mutexes
+[31mapi_5           |[0m current working directory: /docker_api/streamingAnalyzer
+[31mapi_5           |[0m detected binary path: /usr/local/bin/uwsgi
+[31mapi_5           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31mapi_5           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mapi_5           |[0m your memory page size is 4096 bytes
+[31mapi_5           |[0m detected max file descriptor number: 1048576
+[31mapi_5           |[0m - async cores set to 100 - fd table size: 1048576
+[31mapi_5           |[0m lock engine: pthread robust mutexes
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.265 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.265 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+[36mredis_1         |[0m 1:M 03 Jul 2019 08:59:55.265 * Ready to accept connections
+[31mapi_5           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[34mapi_9           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 08:59:58 2019] ***
+[34mapi_9           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[34mapi_9           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[34mapi_9           |[0m nodename: fd407644cd12
+[34mapi_9           |[0m machine: x86_64
+[34mapi_9           |[0m clock source: unix
+[34mapi_9           |[0m pcre jit disabled
+[31mapi_5           |[0m uWSGI http bound on :5050 fd 4
+[33mapi_7           |[0m Python main interpreter initialized at 0xd1dc20
+[33mapi_7           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33mapi_7           |[0m python threads support enabled
+[33mapi_7           |[0m your server socket listen backlog is limited to 100 connections
+[33mapi_7           |[0m your mercy for graceful operations on workers is 60 seconds
+[33mapi_7           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[33mapi_7           |[0m *** Operational MODE: async ***
+[36;1mapi_2           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:00:00 2019] ***
+[36;1mapi_2           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[36;1mapi_2           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[36;1mapi_2           |[0m nodename: dc52e9b70292
+[36;1mapi_2           |[0m machine: x86_64
+[36;1mapi_2           |[0m clock source: unix
+[36;1mapi_2           |[0m pcre jit disabled
+[36;1mapi_2           |[0m detected number of CPU cores: 32
+[36;1mapi_2           |[0m current working directory: /docker_api/streamingAnalyzer
+[36;1mapi_2           |[0m detected binary path: /usr/local/bin/uwsgi
+[36;1mapi_2           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[36;1mapi_2           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m your memory page size is 4096 bytes
+[36;1mapi_2           |[0m detected max file descriptor number: 1048576
+[34mapi_9           |[0m detected number of CPU cores: 32
+[34mapi_9           |[0m current working directory: /docker_api/streamingAnalyzer
+[34mapi_9           |[0m detected binary path: /usr/local/bin/uwsgi
+[34mapi_9           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[34mapi_9           |[0m your memory page size is 4096 bytes
+[34mapi_9           |[0m detected max file descriptor number: 1048576
+[34mapi_9           |[0m - async cores set to 100 - fd table size: 1048576
+[34mapi_9           |[0m lock engine: pthread robust mutexes
+[32mapi_3           |[0m your memory page size is 4096 bytes
+[32mapi_3           |[0m detected max file descriptor number: 1048576
+[32mapi_3           |[0m - async cores set to 100 - fd table size: 1048576
+[32mapi_3           |[0m lock engine: pthread robust mutexes
+[33mapi_7           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[33mapi_7           |[0m   patch_all(aggressive=aggressive)
+[31mapi_5           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:40623 (port auto-assigned) fd 3
+[31mapi_5           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31mapi_5           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33;1mapi_6           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:00:01 2019] ***
+[33;1mapi_6           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[33;1mapi_6           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[33;1mapi_6           |[0m nodename: 44545a2b1d7b
+[33;1mapi_6           |[0m machine: x86_64
+[33;1mapi_6           |[0m clock source: unix
+[36;1mapi_2           |[0m - async cores set to 100 - fd table size: 1048576
+[36;1mapi_2           |[0m lock engine: pthread robust mutexes
+[36;1mapi_2           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[36;1mapi_2           |[0m uWSGI http bound on :5050 fd 4
+[35mapi_4           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33;1mapi_6           |[0m pcre jit disabled
+[33;1mapi_6           |[0m detected number of CPU cores: 32
+[33;1mapi_6           |[0m current working directory: /docker_api/streamingAnalyzer
+[33;1mapi_6           |[0m detected binary path: /usr/local/bin/uwsgi
+[33;1mapi_6           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33;1mapi_6           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33;1mapi_6           |[0m your memory page size is 4096 bytes
+[34mapi_9           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[31mapi_5           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[33;1mapi_6           |[0m detected max file descriptor number: 1048576
+[33;1mapi_6           |[0m - async cores set to 100 - fd table size: 1048576
+[33;1mapi_6           |[0m lock engine: pthread robust mutexes
+[35mapi_4           |[0m uWSGI http bound on :5050 fd 4
+[32;1mapi_8           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:00:03 2019] ***
+[32;1mapi_8           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[32;1mapi_8           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[32;1mapi_8           |[0m nodename: 5cd992f1e3d3
+[32;1mapi_8           |[0m machine: x86_64
+[32;1mapi_8           |[0m clock source: unix
+[32;1mapi_8           |[0m pcre jit disabled
+[32;1mapi_8           |[0m detected number of CPU cores: 32
+[32;1mapi_8           |[0m current working directory: /docker_api/streamingAnalyzer
+[32;1mapi_8           |[0m detected binary path: /usr/local/bin/uwsgi
+[32;1mapi_8           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32;1mapi_8           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:33521 (port auto-assigned) fd 3
+[36;1mapi_2           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[36;1mapi_2           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[32;1mapi_8           |[0m your memory page size is 4096 bytes
+[32;1mapi_8           |[0m detected max file descriptor number: 1048576
+[34mapi_9           |[0m uWSGI http bound on :5050 fd 4
+[34mapi_9           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:45701 (port auto-assigned) fd 3
+[34mapi_9           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33mapi_7           |[0m WSGI app 0 (mountpoint='') ready in 11 seconds on interpreter 0xd1dc20 pid: 1 (default app)
+[33mapi_7           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33mapi_7           |[0m *** uWSGI is running in multiple interpreter mode ***
+[33mapi_7           |[0m spawned uWSGI master process (pid: 1)
+[31mapi_5           |[0m Python main interpreter initialized at 0xd91c20
+[31mapi_5           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31mapi_5           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mapi_5           |[0m python threads support enabled
+[31mapi_5           |[0m your server socket listen backlog is limited to 100 connections
+[31mapi_5           |[0m your mercy for graceful operations on workers is 60 seconds
+[32mapi_3           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[34mapi_9           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[35mapi_4           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:41539 (port auto-assigned) fd 3
+[35mapi_4           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35mapi_4           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[33;1mapi_6           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33mapi_7           |[0m spawned uWSGI worker 1 (pid: 43, cores: 100)
+[36;1mapi_2           |[0m Python main interpreter initialized at 0x24cec20
+[36;1mapi_2           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[36;1mapi_2           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m python threads support enabled
+[36;1mapi_2           |[0m your server socket listen backlog is limited to 100 connections
+[36;1mapi_2           |[0m your mercy for graceful operations on workers is 60 seconds
+[32;1mapi_8           |[0m - async cores set to 100 - fd table size: 1048576
+[32;1mapi_8           |[0m lock engine: pthread robust mutexes
+[35mapi_4           |[0m Python main interpreter initialized at 0x14abc20
+[35mapi_4           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35mapi_4           |[0m python threads support enabled
+[35mapi_4           |[0m your server socket listen backlog is limited to 100 connections
+[35mapi_4           |[0m your mercy for graceful operations on workers is 60 seconds
+[35;1mapi_10          |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:00:04 2019] ***
+[35;1mapi_10          |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[35;1mapi_10          |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[35;1mapi_10          |[0m nodename: 9f8e597621f9
+[35;1mapi_10          |[0m machine: x86_64
+[34;1mmonitor_1       |[0m [I 190703 09:00:18 command:139] Visit me at http://localhost:5555
+[31;1mapi_1           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:00:04 2019] ***
+[31;1mapi_1           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[31;1mapi_1           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[31;1mapi_1           |[0m nodename: c3ca25f403fe
+[31;1mapi_1           |[0m machine: x86_64
+[31;1mapi_1           |[0m clock source: unix
+[34mapi_9           |[0m Python main interpreter initialized at 0x10e1c20
+[34mapi_9           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[34mapi_9           |[0m python threads support enabled
+[34mapi_9           |[0m your server socket listen backlog is limited to 100 connections
+[34mapi_9           |[0m your mercy for graceful operations on workers is 60 seconds
+[35;1mapi_10          |[0m clock source: unix
+[35;1mapi_10          |[0m pcre jit disabled
+[35;1mapi_10          |[0m detected number of CPU cores: 32
+[35;1mapi_10          |[0m current working directory: /docker_api/streamingAnalyzer
+[35;1mapi_10          |[0m detected binary path: /usr/local/bin/uwsgi
+[35;1mapi_10          |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35;1mapi_10          |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36mworker_1        |[0m /usr/local/lib/python3.5/dist-packages/celery/platforms.py:796: RuntimeWarning: You're running the worker with superuser privileges: this is
+[36mworker_1        |[0m absolutely not recommended!
+[36mworker_1        |[0m 
+[36mworker_1        |[0m Please specify a different user using the --uid option.
+[36mworker_1        |[0m 
+[36mworker_1        |[0m User information: uid=0 euid=0 gid=0 egid=0
+[34;1mmonitor_1       |[0m [I 190703 09:00:18 command:144] Broker: redis://redis:6379/0
+[31;1mapi_1           |[0m pcre jit disabled
+[31;1mapi_1           |[0m detected number of CPU cores: 32
+[31;1mapi_1           |[0m current working directory: /docker_api/streamingAnalyzer
+[31;1mapi_1           |[0m detected binary path: /usr/local/bin/uwsgi
+[31;1mapi_1           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31;1mapi_1           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31;1mapi_1           |[0m your memory page size is 4096 bytes
+[36;1mapi_2           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[36;1mapi_2           |[0m *** Operational MODE: async ***
+[31;1mapi_1           |[0m detected max file descriptor number: 1048576
+[31;1mapi_1           |[0m - async cores set to 100 - fd table size: 1048576
+[31;1mapi_1           |[0m lock engine: pthread robust mutexes
+[34;1mmonitor_1       |[0m [I 190703 09:00:18 command:147] Registered tasks: 
+[34;1mmonitor_1       |[0m     ['celery.accumulate',
+[34;1mmonitor_1       |[0m      'celery.backend_cleanup',
+[34;1mmonitor_1       |[0m      'celery.chain',
+[34;1mmonitor_1       |[0m      'celery.chord',
+[34;1mmonitor_1       |[0m      'celery.chord_unlock',
+[31;1mapi_1           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[32;1mapi_8           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33mapi_7           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[34;1mmonitor_1       |[0m      'celery.chunks',
+[34;1mmonitor_1       |[0m      'celery.group',
+[34;1mmonitor_1       |[0m      'celery.map',
+[34;1mmonitor_1       |[0m      'celery.starmap',
+[34;1mmonitor_1       |[0m      'tasks.analyze.file',
+[34;1mmonitor_1       |[0m      'tasks.analyze.url']
+[34mapi_9           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[32;1mapi_8           |[0m uWSGI http bound on :5050 fd 4
+[36;1mapi_2           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[36;1mapi_2           |[0m   patch_all(aggressive=aggressive)
+[36;1mapi_2           |[0m WSGI app 0 (mountpoint='') ready in 14 seconds on interpreter 0x24cec20 pid: 1 (default app)
+[36;1mapi_2           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[36;1mapi_2           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35mapi_4           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[35mapi_4           |[0m *** Operational MODE: async ***
+[31mapi_5           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[31mapi_5           |[0m *** Operational MODE: async ***
+[34;1mmonitor_1       |[0m [I 190703 09:00:19 mixins:224] Connected to redis://redis:6379/0
+[36mworker_1        |[0m 
+[36mworker_1        |[0m   uid=uid, euid=euid, gid=gid, egid=egid,
+[32;1mapi_8           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:41659 (port auto-assigned) fd 3
+[32;1mapi_8           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32;1mapi_8           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31;1mapi_1           |[0m uWSGI http bound on :5050 fd 4
+[31;1mapi_1           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:37675 (port auto-assigned) fd 3
+[31;1mapi_1           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31;1mapi_1           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35;1mapi_10          |[0m your memory page size is 4096 bytes
+[35;1mapi_10          |[0m detected max file descriptor number: 1048576
+[35;1mapi_10          |[0m - async cores set to 100 - fd table size: 1048576
+[35;1mapi_10          |[0m lock engine: pthread robust mutexes
+[36mworker_1        |[0m  
+[36mworker_1        |[0m  -------------- celery@4c2abb6b89dc v4.2.1 (windowlicker)
+[36mworker_1        |[0m ---- **** ----- 
+[36mworker_1        |[0m --- * ***  * -- Linux-4.15.0-46-generic-x86_64-with-Ubuntu-16.04-xenial 2019-07-03 09:00:21
+[36mworker_1        |[0m -- * - **** --- 
+[36mworker_1        |[0m - ** ---------- [config]
+[36mworker_1        |[0m - ** ---------- .> app:         tasks:0x7f999f17bd68
+[36mworker_1        |[0m - ** ---------- .> transport:   redis://redis:6379/0
+[36mworker_1        |[0m - ** ---------- .> results:     redis://redis:6379/0
+[31mapi_5           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[31mapi_5           |[0m   patch_all(aggressive=aggressive)
+[36;1mapi_2           |[0m *** uWSGI is running in multiple interpreter mode ***
+[36;1mapi_2           |[0m spawned uWSGI master process (pid: 1)
+[36mworker_1        |[0m - *** --- * --- .> concurrency: 3 (prefork)
+[36mworker_1        |[0m -- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+[36mworker_1        |[0m --- ***** ----- 
+[36mworker_1        |[0m  -------------- [queues]
+[36mworker_1        |[0m                 .> celery           exchange=celery(direct) key=celery
+[36mworker_1        |[0m                 
+[36mworker_1        |[0m 
+[36mworker_1        |[0m [tasks]
+[33;1mapi_6           |[0m uWSGI http bound on :5050 fd 4
+[35mapi_4           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[32mapi_3           |[0m uWSGI http bound on :5050 fd 4
+[32;1mapi_8           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[36mworker_1        |[0m   . tasks.analyze.file
+[33mapi_7           |[0m Python auto-reloader enabled
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [1] [INFO] Starting gunicorn 19.3.0
+[31mapi_5           |[0m WSGI app 0 (mountpoint='') ready in 14 seconds on interpreter 0xd91c20 pid: 1 (default app)
+[31;1mapi_1           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[36;1mapi_2           |[0m spawned uWSGI worker 1 (pid: 42, cores: 100)
+[34mapi_9           |[0m *** Operational MODE: async ***
+[35;1mapi_10          |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33;1mapi_6           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:37785 (port auto-assigned) fd 3
+[35mapi_4           |[0m   patch_all(aggressive=aggressive)
+[32mapi_3           |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:39331 (port auto-assigned) fd 3
+[36mworker_1        |[0m   . tasks.analyze.url
+[32;1mapi_8           |[0m Python main interpreter initialized at 0xff2c20
+[31mapi_5           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m spawned uWSGI http 1 (pid: 45)
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [1] [INFO] Listening at: http://0.0.0.0:5001 (1)
+[31;1mapi_1           |[0m Python main interpreter initialized at 0x1abbc20
+[36;1mapi_2           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[33;1mapi_6           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[32mapi_3           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35;1mapi_10          |[0m uWSGI http bound on :5050 fd 4
+[36mworker_1        |[0m 
+[32;1mapi_8           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m WSGI app 0 (mountpoint='') ready in 12 seconds on interpreter 0x14abc20 pid: 1 (default app)
+[31mapi_5           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31;1mapi_1           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33;1mapi_6           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m spawned uWSGI http 1 (pid: 44)
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [1] [INFO] Using worker: sync
+[34mapi_9           |[0m   patch_all(aggressive=aggressive)
+[32mapi_3           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36mworker_1        |[0m [2019-07-03 09:00:22,134: INFO/MainProcess] Connected to redis://redis:6379/0
+[32;1mapi_8           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35;1mapi_10          |[0m uwsgi socket 0 bound to TCP address 127.0.0.1:45833 (port auto-assigned) fd 3
+[35mapi_4           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31mapi_5           |[0m *** uWSGI is running in multiple interpreter mode ***
+[31;1mapi_1           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m Python auto-reloader enabled
+[32;1mapi_8           |[0m python threads support enabled
+[34mapi_9           |[0m WSGI app 0 (mountpoint='') ready in 16 seconds on interpreter 0x10e1c20 pid: 1 (default app)
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [10] [INFO] Booting worker with pid: 10
+[35;1mapi_10          |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32mapi_3           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[36mworker_1        |[0m [2019-07-03 09:00:22,383: INFO/MainProcess] mingle: searching for neighbors
+[33;1mapi_6           |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[35mapi_4           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mapi_5           |[0m spawned uWSGI master process (pid: 1)
+[31;1mapi_1           |[0m python threads support enabled
+[32;1mapi_8           |[0m your server socket listen backlog is limited to 100 connections
+[34mapi_9           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35;1mapi_10          |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [12] [INFO] Booting worker with pid: 12
+[32mapi_3           |[0m Python main interpreter initialized at 0x1963c20
+[35mapi_4           |[0m *** uWSGI is running in multiple interpreter mode ***
+[31;1mapi_1           |[0m your server socket listen backlog is limited to 100 connections
+[33;1mapi_6           |[0m Python main interpreter initialized at 0x132cc20
+[31mapi_5           |[0m spawned uWSGI worker 1 (pid: 43, cores: 100)
+[32;1mapi_8           |[0m your mercy for graceful operations on workers is 60 seconds
+[34mapi_9           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32mapi_3           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m spawned uWSGI master process (pid: 1)
+[31;1mapi_1           |[0m your mercy for graceful operations on workers is 60 seconds
+[31mvideoapi_1      |[0m [2019-07-03 09:00:15 +0000] [14] [INFO] Booting worker with pid: 14
+[35;1mapi_10          |[0m Python version: 3.6.2 (default, Sep 13 2017, 14:26:54)  [GCC 4.9.2]
+[33;1mapi_6           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m *** uWSGI is running in multiple interpreter mode ***
+[32mapi_3           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32;1mapi_8           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[31mapi_5           |[0m spawned uWSGI http 1 (pid: 44)
+[35mapi_4           |[0m spawned uWSGI worker 1 (pid: 42, cores: 100)
+[33;1mapi_6           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31;1mapi_1           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[35;1mapi_10          |[0m Python main interpreter initialized at 0x2699c20
+[34mapi_9           |[0m spawned uWSGI master process (pid: 1)
+[32mapi_3           |[0m python threads support enabled
+[32;1mapi_8           |[0m *** Operational MODE: async ***
+[33;1mapi_6           |[0m python threads support enabled
+[31mapi_5           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[31;1mapi_1           |[0m *** Operational MODE: async ***
+[35;1mapi_10          |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[32mapi_3           |[0m your server socket listen backlog is limited to 100 connections
+[34mapi_9           |[0m spawned uWSGI worker 1 (pid: 42, cores: 100)
+[33;1mapi_6           |[0m your server socket listen backlog is limited to 100 connections
+[32;1mapi_8           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[35;1mapi_10          |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mapi_5           |[0m Python auto-reloader enabled
+[32mapi_3           |[0m your mercy for graceful operations on workers is 60 seconds
+[31;1mapi_1           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[33;1mapi_6           |[0m your mercy for graceful operations on workers is 60 seconds
+[35mapi_4           |[0m Python auto-reloader enabled
+[32;1mapi_8           |[0m   patch_all(aggressive=aggressive)
+[34mapi_9           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[35;1mapi_10          |[0m python threads support enabled
+[31;1mapi_1           |[0m   patch_all(aggressive=aggressive)
+[32mapi_3           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[35;1mapi_10          |[0m your server socket listen backlog is limited to 100 connections
+[32;1mapi_8           |[0m WSGI app 0 (mountpoint='') ready in 15 seconds on interpreter 0xff2c20 pid: 1 (default app)
+[35mapi_4           |[0m spawned uWSGI http 1 (pid: 44)
+[33;1mapi_6           |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[35;1mapi_10          |[0m your mercy for graceful operations on workers is 60 seconds
+[34mapi_9           |[0m Python auto-reloader enabled
+[31;1mapi_1           |[0m WSGI app 0 (mountpoint='') ready in 14 seconds on interpreter 0x1abbc20 pid: 1 (default app)
+[32mapi_3           |[0m *** Operational MODE: async ***
+[32;1mapi_8           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33;1mapi_6           |[0m *** Operational MODE: async ***
+[31;1mapi_1           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m spawned uWSGI http 1 (pid: 44)
+[35;1mapi_10          |[0m mapped 2216128 bytes (2164 KB) for 100 cores
+[32;1mapi_8           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32mapi_3           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[31;1mapi_1           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33;1mapi_6           |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[35;1mapi_10          |[0m *** Operational MODE: async ***
+[32;1mapi_8           |[0m *** uWSGI is running in multiple interpreter mode ***
+[32mapi_3           |[0m   patch_all(aggressive=aggressive)
+[31;1mapi_1           |[0m *** uWSGI is running in multiple interpreter mode ***
+[33;1mapi_6           |[0m   patch_all(aggressive=aggressive)
+[32;1mapi_8           |[0m spawned uWSGI master process (pid: 1)
+[35;1mapi_10          |[0m /usr/local/lib/python3.6/site-packages/flask_uwsgi_websocket/_gevent.py:138: MonkeyPatchWarning: Patching more than once will result in the union of all True parameters being patched
+[31;1mapi_1           |[0m spawned uWSGI master process (pid: 1)
+[32mapi_3           |[0m WSGI app 0 (mountpoint='') ready in 14 seconds on interpreter 0x1963c20 pid: 1 (default app)
+[35;1mapi_10          |[0m   patch_all(aggressive=aggressive)
+[32;1mapi_8           |[0m spawned uWSGI worker 1 (pid: 42, cores: 100)
+[33;1mapi_6           |[0m WSGI app 0 (mountpoint='') ready in 15 seconds on interpreter 0x132cc20 pid: 1 (default app)
+[32mapi_3           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31;1mapi_1           |[0m spawned uWSGI worker 1 (pid: 43, cores: 100)
+[35;1mapi_10          |[0m WSGI app 0 (mountpoint='') ready in 16 seconds on interpreter 0x2699c20 pid: 1 (default app)
+[33;1mapi_6           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32mapi_3           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32;1mapi_8           |[0m spawned uWSGI http 1 (pid: 44)
+[33;1mapi_6           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32mapi_3           |[0m *** uWSGI is running in multiple interpreter mode ***
+[35;1mapi_10          |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33;1mapi_6           |[0m *** uWSGI is running in multiple interpreter mode ***
+[31;1mapi_1           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[32;1mapi_8           |[0m Python auto-reloader enabled
+[32mapi_3           |[0m spawned uWSGI master process (pid: 1)
+[35;1mapi_10          |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33;1mapi_6           |[0m spawned uWSGI master process (pid: 1)
+[31;1mapi_1           |[0m spawned uWSGI http 1 (pid: 45)
+[33;1mapi_6           |[0m spawned uWSGI worker 1 (pid: 43, cores: 100)
+[32;1mapi_8           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[35;1mapi_10          |[0m *** uWSGI is running in multiple interpreter mode ***
+[32mapi_3           |[0m spawned uWSGI worker 1 (pid: 43, cores: 100)
+[33;1mapi_6           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[31;1mapi_1           |[0m Python auto-reloader enabled
+[35;1mapi_10          |[0m spawned uWSGI master process (pid: 1)
+[35;1mapi_10          |[0m spawned uWSGI worker 1 (pid: 42, cores: 100)
+[32mapi_3           |[0m spawned uWSGI http 1 (pid: 45)
+[33;1mapi_6           |[0m spawned uWSGI http 1 (pid: 45)
+[32mapi_3           |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[35;1mapi_10          |[0m spawned uWSGI http 1 (pid: 43)
+[32mapi_3           |[0m Python auto-reloader enabled
+[33;1mapi_6           |[0m Python auto-reloader enabled
+[35;1mapi_10          |[0m *** running gevent loop engine [addr:0x490ba0] ***
+[35;1mapi_10          |[0m Python auto-reloader enabled
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'stats' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'active_queues' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'registered' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'scheduled' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'active' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'reserved' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'revoked' inspect method failed
+[34;1mmonitor_1       |[0m [W 190703 09:00:23 control:44] 'conf' inspect method failed
+[36mworker_1        |[0m [2019-07-03 09:00:23,733: INFO/MainProcess] mingle: all alone
+[36mworker_1        |[0m [2019-07-03 09:00:23,829: INFO/MainProcess] celery@4c2abb6b89dc ready.
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [error] 9#9: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.17:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [warn] 9#9: *1 upstream server temporarily disabled while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.17:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [error] 9#9: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.18:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [warn] 9#9: *1 upstream server temporarily disabled while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.18:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [error] 9#9: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.15:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:25 [warn] 9#9: *1 upstream server temporarily disabled while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://192.168.128.15:5001/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:00:25 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 502 182 "-" "curl/7.38.0" "-"
+[36mworker_1        |[0m [2019-07-03 09:00:28,553: INFO/MainProcess] Events of group {task} enabled by remote.
+[33mgateway_3       |[0m 192.168.0.103:8900
+[33mgateway_3       |[0m 192.168.0.103:8901
+[33mgateway_3       |[0m 192.168.0.103:8902
+[33mgateway_3       |[0m 192.168.0.103:8903
+[33mgateway_3       |[0m channel connected
+[36;1mloadbalancer_1  |[0m 2019/07/03 09:00:33 [error] 9#9: *5 no live upstreams while connecting to upstream, client: 192.168.128.1, server: localhost, request: "POST /emotibot/v2/analyze HTTP/1.1", upstream: "http://localhost/emotibot/v2/analyze", host: "172.17.0.1:5001"
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:00:33 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 502 182 "-" "curl/7.38.0" "-"
+[32mgateway_2       |[0m 192.168.0.103:8900
+[35mgateway_1       |[0m 192.168.0.103:8900
+[32mgateway_2       |[0m 192.168.0.103:8901
+[32mgateway_2       |[0m 192.168.0.103:8902
+[32mgateway_2       |[0m 192.168.0.103:8903
+[32mgateway_2       |[0m channel connected
+[35mgateway_1       |[0m 192.168.0.103:8901
+[35mgateway_1       |[0m 192.168.0.103:8902
+[35mgateway_1       |[0m 192.168.0.103:8903
+[35mgateway_1       |[0m channel connected
+[33mgateway_3       |[0m tmp_id, face, body =  2019-07-03 09:00:47.503463 default_tmp_id 3866 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:00:47 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6972 "-" "curl/7.38.0" "-"
+[33mgateway_3       |[0m 2019-07-03 09:00:47,531 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 4157.97ms
+[33mgateway_3       |[0m tmp_id, face, body =  2019-07-03 09:04:51.750921 default_tmp_id 3526 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:04:51 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6972 "-" "curl/7.38.0" "-"
+[33mgateway_3       |[0m 2019-07-03 09:04:51,780 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 3758.41ms
+[33mapi_7           |[0m [pid: 43|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:04:56 2019] GET /streaming/check => generated 232 bytes in 37 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[32mapi_3           |[0m [pid: 43|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:04:57 2019] GET /streaming/check => generated 232 bytes in 49 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[35mapi_4           |[0m [pid: 42|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 370 bytes} [Wed Jul  3 09:04:59 2019] GET /streaming/check => generated 232 bytes in 32 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[31mapi_5           |[0m [pid: 43|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:05:00 2019] GET /streaming/check => generated 232 bytes in 42 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[34mapi_9           |[0m [pid: 42|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:05:01 2019] GET /streaming/check => generated 232 bytes in 29 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[33;1mapi_6           |[0m [pid: 43|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 369 bytes} [Wed Jul  3 09:05:03 2019] GET /streaming/check => generated 232 bytes in 30 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[36;1mapi_2           |[0m [pid: 42|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 370 bytes} [Wed Jul  3 09:05:04 2019] GET /streaming/check => generated 232 bytes in 34 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[32;1mapi_8           |[0m [pid: 42|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:05:06 2019] GET /streaming/check => generated 232 bytes in 32 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[31;1mapi_1           |[0m [pid: 43|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:05:07 2019] GET /streaming/check => generated 232 bytes in 37 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[35;1mapi_10          |[0m [pid: 42|app: 0|req: 1/1] 127.0.0.1 () {32 vars in 371 bytes} [Wed Jul  3 09:05:07 2019] GET /streaming/check => generated 232 bytes in 52 msecs (HTTP/1.1 404) 2 headers in 72 bytes (3 switches on core 99)
+[33mgateway_3       |[0m tmp_id, face, body =  2019-07-03 09:05:15.494730 default_tmp_id 3623 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:15 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6969 "-" "curl/7.38.0" "-"
+[33mgateway_3       |[0m 2019-07-03 09:05:15,525 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 3835.55ms
+[35mgateway_1       |[0m tmp_id, face, body =  2019-07-03 09:05:18.224647 default_tmp_id 3814 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:18 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6972 "-" "curl/7.38.0" "-"
+[35mgateway_1       |[0m 2019-07-03 09:05:18,246 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 4077.84ms
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:28 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 499 25 "-" "curl/7.38.0" "-"
+[32mgateway_2       |[0m 2019-07-03 09:05:29,260 1788 Uncaught exception POST /emotibot/v2/analyze (192.168.128.20)
+[32mgateway_2       |[0m HTTPServerRequest(protocol='http', host='172.17.0.1', method='POST', uri='/emotibot/v2/analyze', version='HTTP/1.0', remote_ip='192.168.128.20')
+[32mgateway_2       |[0m Traceback (most recent call last):
+[32mgateway_2       |[0m   File "/usr/local/lib/python3.6/site-packages/tornado/web.py", line 1699, in _execute
+[32mgateway_2       |[0m     result = await result
+[32mgateway_2       |[0m   File "server.py", line 557, in post
+[32mgateway_2       |[0m     resp = await request_list[i]
+[32mgateway_2       |[0m tornado.simple_httpclient.HTTPTimeoutError: Timeout while connecting
+[32mgateway_2       |[0m ERROR: tmp_id, face, body =  2019-07-03 09:05:29.263364 default_tmp_id 29297 None
+[32mgateway_2       |[0m 2019-07-03 09:05:29,265 2246 500 POST /emotibot/v2/analyze (192.168.128.20) 29527.88ms
+[32mgateway_2       |[0m tmp_id, face, body =  2019-07-03 09:05:32.713212 default_tmp_id 3471 855
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:32 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6972 "-" "curl/7.38.0" "-"
+[32mgateway_2       |[0m 2019-07-03 09:05:32,741 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 3728.19ms
+[33mgateway_3       |[0m tmp_id, face, body =  2019-07-03 09:05:34.243114 default_tmp_id 3331 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:34 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6972 "-" "curl/7.38.0" "-"
+[33mgateway_3       |[0m 2019-07-03 09:05:34,262 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 3511.54ms
+[32mgateway_2       |[0m tmp_id, face, body =  2019-07-03 09:05:42.454986 default_tmp_id 3299 None
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:05:42 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 200 6970 "-" "curl/7.38.0" "-"
+[32mgateway_2       |[0m 2019-07-03 09:05:42,475 2246 200 POST /emotibot/v2/analyze (192.168.128.20) 3495.34ms
+[35mgateway_1       |[0m 2019-07-03 09:06:21,782 1788 Uncaught exception POST /emotibot/v2/analyze (192.168.128.20)
+[35mgateway_1       |[0m HTTPServerRequest(protocol='http', host='172.17.0.1', method='POST', uri='/emotibot/v2/analyze', version='HTTP/1.0', remote_ip='192.168.128.20')
+[35mgateway_1       |[0m Traceback (most recent call last):
+[35mgateway_1       |[0m   File "/usr/local/lib/python3.6/site-packages/tornado/web.py", line 1699, in _execute
+[35mgateway_1       |[0m     result = await result
+[35mgateway_1       |[0m   File "server.py", line 557, in post
+[35mgateway_1       |[0m     resp = await request_list[i]
+[35mgateway_1       |[0m tornado.simple_httpclient.HTTPTimeoutError: Timeout while connecting
+[36;1mloadbalancer_1  |[0m 192.168.128.1 - - [03/Jul/2019:09:06:21 +0000] "POST /emotibot/v2/analyze HTTP/1.1" 500 129 "-" "curl/7.38.0" "-"
+[35mgateway_1       |[0m ERROR: tmp_id, face, body =  2019-07-03 09:06:21.784940 default_tmp_id 28551 None
+[35mgateway_1       |[0m 2019-07-03 09:06:21,787 2246 500 POST /emotibot/v2/analyze (192.168.128.20) 28760.77ms
+[31mvideoapi_1      |[0m [2019-07-03 09:07:14 +0000] [1] [INFO] Handling signal: term
+[34;1mmonitor_1       |[0m [I 190703 09:07:14 command:47] SIGTERM detected, shutting down
+[34memovision-streaming_nginx_1 exited with code 0
+[0m[36;1memovision-streaming_loadbalancer_1 exited with code 0
+[0m[35mapi_4           |[0m gateway "uWSGI http 1" has been buried (pid: 44)
+[35mapi_4           |[0m ...brutally killing workers...
+[35mapi_4           |[0m Brutally killing worker 1 (pid: 42)...
+[35mapi_4           |[0m Wed Jul  3 09:07:16 2019 - stopping gevent signals watchers for worker 1 (pid: 42)...
+[35mapi_4           |[0m Wed Jul  3 09:07:16 2019 - stopping gevent sockets watchers for worker 1 (pid: 42)...
+[35mapi_4           |[0m Wed Jul  3 09:07:16 2019 - main gevent watchers stopped for worker 1 (pid: 42)...
+[35mapi_4           |[0m goodbye to the gevent Hub on worker 1 (pid: 42)
+[33;1mapi_6           |[0m gateway "uWSGI http 1" has been buried (pid: 45)
+[33;1mapi_6           |[0m ...brutally killing workers...
+[33;1mapi_6           |[0m Brutally killing worker 1 (pid: 43)...
+[33;1mapi_6           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 43)...
+[33;1mapi_6           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 43)...
+[33;1mapi_6           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 43)...
+[33;1mapi_6           |[0m goodbye to the gevent Hub on worker 1 (pid: 43)
+[35mapi_4           |[0m worker 1 buried after 1 seconds
+[35mapi_4           |[0m binary reloading uWSGI...
+[35mapi_4           |[0m chdir() to /docker_api/streamingAnalyzer
+[35mapi_4           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[35mapi_4           |[0m found fd 3 mapped to socket 0 (127.0.0.1:41539)
+[32;1mapi_8           |[0m gateway "uWSGI http 1" has been buried (pid: 44)
+[32;1mapi_8           |[0m ...brutally killing workers...
+[32;1mapi_8           |[0m Brutally killing worker 1 (pid: 42)...
+[32;1mapi_8           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 42)...
+[32;1mapi_8           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 42)...
+[32;1mapi_8           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 42)...
+[32;1mapi_8           |[0m goodbye to the gevent Hub on worker 1 (pid: 42)
+[33;1mapi_6           |[0m worker 1 buried after 0 seconds
+[33;1mapi_6           |[0m binary reloading uWSGI...
+[33;1mapi_6           |[0m chdir() to /docker_api/streamingAnalyzer
+[33;1mapi_6           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[33;1mapi_6           |[0m found fd 3 mapped to socket 0 (127.0.0.1:37785)
+[31;1mapi_1           |[0m gateway "uWSGI http 1" has been buried (pid: 45)
+[31;1mapi_1           |[0m ...brutally killing workers...
+[31mapi_5           |[0m gateway "uWSGI http 1" has been buried (pid: 44)
+[31mapi_5           |[0m ...brutally killing workers...
+[31;1mapi_1           |[0m Brutally killing worker 1 (pid: 43)...
+[31;1mapi_1           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 43)...
+[31;1mapi_1           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 43)...
+[31mapi_5           |[0m Brutally killing worker 1 (pid: 43)...
+[31mapi_5           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 43)...
+[31mapi_5           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 43)...
+[31mapi_5           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 43)...
+[31mapi_5           |[0m goodbye to the gevent Hub on worker 1 (pid: 43)
+[31;1mapi_1           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 43)...
+[36;1mapi_2           |[0m gateway "uWSGI http 1" has been buried (pid: 44)
+[36;1mapi_2           |[0m ...brutally killing workers...
+[33mapi_7           |[0m gateway "uWSGI http 1" has been buried (pid: 45)
+[33mapi_7           |[0m ...brutally killing workers...
+[34;1memovision-streaming_monitor_1 exited with code 0
+[0m[31;1mapi_1           |[0m goodbye to the gevent Hub on worker 1 (pid: 43)
+[32;1mapi_8           |[0m worker 1 buried after 0 seconds
+[32;1mapi_8           |[0m binary reloading uWSGI...
+[32;1mapi_8           |[0m chdir() to /docker_api/streamingAnalyzer
+[32;1mapi_8           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[32;1mapi_8           |[0m found fd 3 mapped to socket 0 (127.0.0.1:41659)
+[33mapi_7           |[0m Brutally killing worker 1 (pid: 43)...
+[33mapi_7           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 43)...
+[33mapi_7           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 43)...
+[33mapi_7           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 43)...
+[36;1mapi_2           |[0m Brutally killing worker 1 (pid: 42)...
+[31mapi_5           |[0m worker 1 buried after 0 seconds
+[31mapi_5           |[0m binary reloading uWSGI...
+[31mapi_5           |[0m chdir() to /docker_api/streamingAnalyzer
+[35;1mapi_10          |[0m gateway "uWSGI http 1" has been buried (pid: 43)
+[35;1mapi_10          |[0m ...brutally killing workers...
+[31mapi_5           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[31mapi_5           |[0m found fd 3 mapped to socket 0 (127.0.0.1:40623)
+[36;1mapi_2           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 42)...
+[36;1mapi_2           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 42)...
+[36;1mapi_2           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 42)...
+[35;1mapi_10          |[0m Brutally killing worker 1 (pid: 42)...
+[35;1mapi_10          |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 42)...
+[35;1mapi_10          |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 42)...
+[36;1mapi_2           |[0m goodbye to the gevent Hub on worker 1 (pid: 42)
+[35;1mapi_10          |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 42)...
+[36;1mapi_2           |[0m worker 1 buried after 0 seconds
+[36;1mapi_2           |[0m binary reloading uWSGI...
+[36;1mapi_2           |[0m chdir() to /docker_api/streamingAnalyzer
+[36;1mapi_2           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[36;1mapi_2           |[0m found fd 3 mapped to socket 0 (127.0.0.1:33521)
+[31;1mapi_1           |[0m worker 1 buried after 0 seconds
+[31;1mapi_1           |[0m binary reloading uWSGI...
+[31;1mapi_1           |[0m chdir() to /docker_api/streamingAnalyzer
+[32mapi_3           |[0m gateway "uWSGI http 1" has been buried (pid: 45)
+[32mapi_3           |[0m ...brutally killing workers...
+[34mapi_9           |[0m gateway "uWSGI http 1" has been buried (pid: 44)
+[34mapi_9           |[0m ...brutally killing workers...
+[35;1mapi_10          |[0m goodbye to the gevent Hub on worker 1 (pid: 42)
+[31;1mapi_1           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[31;1mapi_1           |[0m found fd 3 mapped to socket 0 (127.0.0.1:37675)
+[33mapi_7           |[0m goodbye to the gevent Hub on worker 1 (pid: 43)
+[32mapi_3           |[0m Brutally killing worker 1 (pid: 43)...
+[32mapi_3           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 43)...
+[34mapi_9           |[0m Brutally killing worker 1 (pid: 42)...
+[34mapi_9           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent signals watchers for worker 1 (pid: 42)...
+[32mapi_3           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 43)...
+[32mapi_3           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 43)...
+[34mapi_9           |[0m Wed Jul  3 09:07:17 2019 - stopping gevent sockets watchers for worker 1 (pid: 42)...
+[34mapi_9           |[0m Wed Jul  3 09:07:17 2019 - main gevent watchers stopped for worker 1 (pid: 42)...
+[32mapi_3           |[0m goodbye to the gevent Hub on worker 1 (pid: 43)
+[35;1mapi_10          |[0m worker 1 buried after 0 seconds
+[35;1mapi_10          |[0m binary reloading uWSGI...
+[35;1mapi_10          |[0m chdir() to /docker_api/streamingAnalyzer
+[35;1mapi_10          |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[35;1mapi_10          |[0m found fd 3 mapped to socket 0 (127.0.0.1:45833)
+[33mapi_7           |[0m worker 1 buried after 0 seconds
+[33mapi_7           |[0m binary reloading uWSGI...
+[33mapi_7           |[0m chdir() to /docker_api/streamingAnalyzer
+[33mapi_7           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[33mapi_7           |[0m found fd 3 mapped to socket 0 (127.0.0.1:33779)
+[34mapi_9           |[0m goodbye to the gevent Hub on worker 1 (pid: 42)
+[34mapi_9           |[0m worker 1 buried after 0 seconds
+[34mapi_9           |[0m binary reloading uWSGI...
+[34mapi_9           |[0m chdir() to /docker_api/streamingAnalyzer
+[32mapi_3           |[0m worker 1 buried after 0 seconds
+[32mapi_3           |[0m binary reloading uWSGI...
+[32mapi_3           |[0m chdir() to /docker_api/streamingAnalyzer
+[32mapi_3           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[32mapi_3           |[0m found fd 3 mapped to socket 0 (127.0.0.1:39331)
+[34mapi_9           |[0m closing all non-uwsgi socket fds > 2 (max_fd = 1048576)...
+[34mapi_9           |[0m found fd 3 mapped to socket 0 (127.0.0.1:45701)
+[32;1mapi_8           |[0m running /usr/local/bin/uwsgi
+[35mapi_4           |[0m running /usr/local/bin/uwsgi
+[36;1mapi_2           |[0m running /usr/local/bin/uwsgi
+[32;1mapi_8           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:20 2019] ***
+[32;1mapi_8           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[32;1mapi_8           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[32;1mapi_8           |[0m nodename: 5cd992f1e3d3
+[32;1mapi_8           |[0m machine: x86_64
+[32;1mapi_8           |[0m clock source: unix
+[32;1mapi_8           |[0m pcre jit disabled
+[32;1mapi_8           |[0m detected number of CPU cores: 32
+[32;1mapi_8           |[0m current working directory: /docker_api/streamingAnalyzer
+[32;1mapi_8           |[0m detected binary path: /usr/local/bin/uwsgi
+[32;1mapi_8           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32;1mapi_8           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32;1mapi_8           |[0m your memory page size is 4096 bytes
+[32;1mapi_8           |[0m detected max file descriptor number: 1048576
+[32;1mapi_8           |[0m - async cores set to 100 - fd table size: 1048576
+[32;1mapi_8           |[0m lock engine: pthread robust mutexes
+[32;1mapi_8           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[36;1mapi_2           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:20 2019] ***
+[36;1mapi_2           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[36;1mapi_2           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[36;1mapi_2           |[0m nodename: dc52e9b70292
+[36;1mapi_2           |[0m machine: x86_64
+[35mapi_4           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:20 2019] ***
+[35mapi_4           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[35mapi_4           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[35mapi_4           |[0m nodename: f301ab7fa118
+[35mapi_4           |[0m machine: x86_64
+[35mapi_4           |[0m clock source: unix
+[36;1mapi_2           |[0m clock source: unix
+[36;1mapi_2           |[0m pcre jit disabled
+[36;1mapi_2           |[0m detected number of CPU cores: 32
+[36;1mapi_2           |[0m current working directory: /docker_api/streamingAnalyzer
+[36;1mapi_2           |[0m detected binary path: /usr/local/bin/uwsgi
+[36;1mapi_2           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[36;1mapi_2           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[36;1mapi_2           |[0m your memory page size is 4096 bytes
+[32;1mapi_8           |[0m uWSGI http bound on :5050 fd 5
+[35mapi_4           |[0m pcre jit disabled
+[35mapi_4           |[0m detected number of CPU cores: 32
+[35mapi_4           |[0m current working directory: /docker_api/streamingAnalyzer
+[35mapi_4           |[0m detected binary path: /usr/local/bin/uwsgi
+[35mapi_4           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35mapi_4           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35mapi_4           |[0m your memory page size is 4096 bytes
+[35mapi_4           |[0m detected max file descriptor number: 1048576
+[35mapi_4           |[0m - async cores set to 100 - fd table size: 1048576
+[35mapi_4           |[0m lock engine: pthread robust mutexes
+[36;1mapi_2           |[0m detected max file descriptor number: 1048576
+[36;1mapi_2           |[0m - async cores set to 100 - fd table size: 1048576
+[36;1mapi_2           |[0m lock engine: pthread robust mutexes
+[36;1mapi_2           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[35mapi_4           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[35;1mapi_10          |[0m running /usr/local/bin/uwsgi
+[35mapi_4           |[0m uWSGI http bound on :5050 fd 5
+[36;1mapi_2           |[0m uWSGI http bound on :5050 fd 5
+[35;1mapi_10          |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[35;1mapi_10          |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[35;1mapi_10          |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[35;1mapi_10          |[0m nodename: 9f8e597621f9
+[35;1mapi_10          |[0m machine: x86_64
+[35;1mapi_10          |[0m clock source: unix
+[35;1mapi_10          |[0m pcre jit disabled
+[35;1mapi_10          |[0m detected number of CPU cores: 32
+[35;1mapi_10          |[0m current working directory: /docker_api/streamingAnalyzer
+[35;1mapi_10          |[0m detected binary path: /usr/local/bin/uwsgi
+[35;1mapi_10          |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[35;1mapi_10          |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[35;1mapi_10          |[0m your memory page size is 4096 bytes
+[35;1mapi_10          |[0m detected max file descriptor number: 1048576
+[35;1mapi_10          |[0m - async cores set to 100 - fd table size: 1048576
+[35;1mapi_10          |[0m lock engine: pthread robust mutexes
+[35;1mapi_10          |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[35;1mapi_10          |[0m uWSGI http bound on :5050 fd 5
+[33mapi_7           |[0m running /usr/local/bin/uwsgi
+[31;1mapi_1           |[0m running /usr/local/bin/uwsgi
+[34mapi_9           |[0m running /usr/local/bin/uwsgi
+[33mapi_7           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[33mapi_7           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[33mapi_7           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[33mapi_7           |[0m nodename: c7c9320d41c5
+[33mapi_7           |[0m machine: x86_64
+[33mapi_7           |[0m clock source: unix
+[33mapi_7           |[0m pcre jit disabled
+[33mapi_7           |[0m detected number of CPU cores: 32
+[33mapi_7           |[0m current working directory: /docker_api/streamingAnalyzer
+[33mapi_7           |[0m detected binary path: /usr/local/bin/uwsgi
+[33mapi_7           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33mapi_7           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33mapi_7           |[0m your memory page size is 4096 bytes
+[33mapi_7           |[0m detected max file descriptor number: 1048576
+[33mapi_7           |[0m - async cores set to 100 - fd table size: 1048576
+[33mapi_7           |[0m lock engine: pthread robust mutexes
+[33mapi_7           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33mapi_7           |[0m uWSGI http bound on :5050 fd 5
+[31;1mapi_1           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[31;1mapi_1           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[31;1mapi_1           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[31;1mapi_1           |[0m nodename: c3ca25f403fe
+[31;1mapi_1           |[0m machine: x86_64
+[31;1mapi_1           |[0m clock source: unix
+[31;1mapi_1           |[0m pcre jit disabled
+[31;1mapi_1           |[0m detected number of CPU cores: 32
+[31;1mapi_1           |[0m current working directory: /docker_api/streamingAnalyzer
+[31;1mapi_1           |[0m detected binary path: /usr/local/bin/uwsgi
+[31;1mapi_1           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31;1mapi_1           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31;1mapi_1           |[0m your memory page size is 4096 bytes
+[34mapi_9           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[34mapi_9           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[34mapi_9           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[34mapi_9           |[0m nodename: fd407644cd12
+[34mapi_9           |[0m machine: x86_64
+[34mapi_9           |[0m clock source: unix
+[34mapi_9           |[0m pcre jit disabled
+[34mapi_9           |[0m detected number of CPU cores: 32
+[34mapi_9           |[0m current working directory: /docker_api/streamingAnalyzer
+[34mapi_9           |[0m detected binary path: /usr/local/bin/uwsgi
+[31;1mapi_1           |[0m detected max file descriptor number: 1048576
+[31;1mapi_1           |[0m - async cores set to 100 - fd table size: 1048576
+[31;1mapi_1           |[0m lock engine: pthread robust mutexes
+[31;1mapi_1           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[34mapi_9           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[34mapi_9           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[34mapi_9           |[0m your memory page size is 4096 bytes
+[34mapi_9           |[0m detected max file descriptor number: 1048576
+[34mapi_9           |[0m - async cores set to 100 - fd table size: 1048576
+[34mapi_9           |[0m lock engine: pthread robust mutexes
+[34mapi_9           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[31mapi_5           |[0m running /usr/local/bin/uwsgi
+[34mapi_9           |[0m uWSGI http bound on :5050 fd 5
+[31;1mapi_1           |[0m uWSGI http bound on :5050 fd 5
+[33;1mapi_6           |[0m running /usr/local/bin/uwsgi
+[31mapi_5           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[31mapi_5           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[31mapi_5           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[31mapi_5           |[0m nodename: 3356af3c7881
+[31mapi_5           |[0m machine: x86_64
+[31mapi_5           |[0m clock source: unix
+[31mapi_5           |[0m pcre jit disabled
+[31mapi_5           |[0m detected number of CPU cores: 32
+[31mapi_5           |[0m current working directory: /docker_api/streamingAnalyzer
+[31mapi_5           |[0m detected binary path: /usr/local/bin/uwsgi
+[31mapi_5           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[31mapi_5           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[31mapi_5           |[0m your memory page size is 4096 bytes
+[31mapi_5           |[0m detected max file descriptor number: 1048576
+[31mapi_5           |[0m - async cores set to 100 - fd table size: 1048576
+[31mapi_5           |[0m lock engine: pthread robust mutexes
+[31mapi_5           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[31mapi_5           |[0m uWSGI http bound on :5050 fd 5
+[33;1mapi_6           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[33;1mapi_6           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[33;1mapi_6           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[33;1mapi_6           |[0m nodename: 44545a2b1d7b
+[33;1mapi_6           |[0m machine: x86_64
+[33;1mapi_6           |[0m clock source: unix
+[33;1mapi_6           |[0m pcre jit disabled
+[33;1mapi_6           |[0m detected number of CPU cores: 32
+[33;1mapi_6           |[0m current working directory: /docker_api/streamingAnalyzer
+[33;1mapi_6           |[0m detected binary path: /usr/local/bin/uwsgi
+[33;1mapi_6           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[33;1mapi_6           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[33;1mapi_6           |[0m your memory page size is 4096 bytes
+[33;1mapi_6           |[0m detected max file descriptor number: 1048576
+[32mapi_3           |[0m running /usr/local/bin/uwsgi
+[33;1mapi_6           |[0m - async cores set to 100 - fd table size: 1048576
+[33;1mapi_6           |[0m lock engine: pthread robust mutexes
+[33;1mapi_6           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[33;1mapi_6           |[0m uWSGI http bound on :5050 fd 5
+[32mapi_3           |[0m *** Starting uWSGI 2.0.18 (64bit) on [Wed Jul  3 09:07:21 2019] ***
+[32mapi_3           |[0m compiled with version: 4.9.2 on 26 June 2019 03:36:54
+[32mapi_3           |[0m os: Linux-4.15.0-46-generic #49~16.04.1-Ubuntu SMP Tue Feb 12 17:45:24 UTC 2019
+[32mapi_3           |[0m nodename: 47985cb4b9dc
+[32mapi_3           |[0m machine: x86_64
+[32mapi_3           |[0m clock source: unix
+[32mapi_3           |[0m pcre jit disabled
+[32mapi_3           |[0m detected number of CPU cores: 32
+[32mapi_3           |[0m current working directory: /docker_api/streamingAnalyzer
+[32mapi_3           |[0m detected binary path: /usr/local/bin/uwsgi
+[32mapi_3           |[0m uWSGI running as root, you can use --uid/--gid/--chroot options
+[32mapi_3           |[0m *** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+[32mapi_3           |[0m your memory page size is 4096 bytes
+[32mapi_3           |[0m detected max file descriptor number: 1048576
+[32mapi_3           |[0m - async cores set to 100 - fd table size: 1048576
+[32mapi_3           |[0m lock engine: pthread robust mutexes
+[32mapi_3           |[0m thunder lock: disabled (you can enable it with --thunder-lock)
+[32mapi_3           |[0m uWSGI http bound on :5050 fd 5
+[36memovision-streaming_worker_1 exited with code 137
+[0m[31memovision-streaming_videoapi_1 exited with code 137
+[0m[32memovision-streaming_api_3 exited with code 137
+[0m[31memovision-streaming_api_5 exited with code 137
+[0m[33;1memovision-streaming_api_6 exited with code 137
+[0m[36;1memovision-streaming_api_2 exited with code 137
+[0m[33memovision-streaming_gateway_3 exited with code 137
+[0m[32memovision-streaming_gateway_2 exited with code 137
+[0m[34memovision-streaming_api_9 exited with code 137
+[0m[35memovision-streaming_gateway_1 exited with code 137
+[0m[32;1memovision-streaming_api_8 exited with code 137
+[0m[33memovision-streaming_api_7 exited with code 137
+[0m[36mredis_1         |[0m 1:signal-handler (1562144852) Received SIGTERM scheduling shutdown...
+[36mredis_1         |[0m 1:M 03 Jul 2019 09:07:32.161 # User requested shutdown...
+[36mredis_1         |[0m 1:M 03 Jul 2019 09:07:32.161 * Saving the final RDB snapshot before exiting.
+[36mredis_1         |[0m 1:M 03 Jul 2019 09:07:32.169 * DB saved on disk
+[36mredis_1         |[0m 1:M 03 Jul 2019 09:07:32.169 # Redis is now ready to exit, bye bye...
+[35memovision-streaming_api_4 exited with code 137
+[0m[31;1memovision-streaming_api_1 exited with code 137
+[0m[35;1memovision-streaming_api_10 exited with code 137
+[0m[36memovision-streaming_redis_1 exited with code 0
+[0m

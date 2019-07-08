@@ -2,7 +2,6 @@ from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado import gen
 from tornado.websocket import websocket_connect
 from tornado import httputil ,httpclient
-import tornado.httpclient 
 import urllib.parse
 import marshal
 import json
@@ -15,8 +14,6 @@ faceset_token_dict = {
     "02":"b49f2510-925d-11e9-99ce-0242ac140014",
     "04":"fa3f39d2-7572-11e9-95f7-0242ac120013",
     "08":"536adf8a-7568-11e9-999b-0242ac1f0013",
-    "09":"841ee0b6-9c9d-11e9-b5a7-0242ac130014",
-    "10":"e8bdb290-98c4-11e9-b036-0242ac140014",
     "11":"3e53d222-755f-11e9-9657-0242ac1b0013",
     "16":"fcfc8d92-8da4-11e9-a707-0242ac130014",
 }
@@ -69,7 +66,15 @@ class Client(object):
     def connect(self):
         print ("trying to connect")
         try:
-            self.ws = yield websocket_connect(url=self.url)
+            headers = httputil.HTTPHeaders({
+                'Accept-Encoding': '',
+                'HTTP_ACCEPT_ENCODING': '',
+                'Connection': 'upgrade',
+                'Upgrade': 'WebSocket',
+                'Sec-Websocket-Origin': '*',
+            }) 
+            request = httpclient.HTTPRequest(url=self.url, headers=headers)  
+            self.ws = yield websocket_connect(url=request,compression_options={'compression_level':0})
         except Exception as e:
             print ("connection error")
             print (e)
@@ -89,10 +94,17 @@ class Client(object):
         # global error_count 
         while True:
             msg = yield self.ws.read_message()
-            
+
+            # object_methods = [method_name for method_name in dir(self.ws)]
+            # print(object_methods)
+            # print("==headers==")
+            # print(self.ws.headers)
+            # print("==headers_received==")
+            # print(self.ws.get_compression_options())
+
+
             if msg is None:
-                # print ("connection closed",rtsp_list[self.index])
-                print("======= Connection at index %d was closed. ========" % self.index)
+                print ("connection closed",rtsp_list[self.index])
                 self.ws.close()
                 self.ws = None
                 self.timer.stop()

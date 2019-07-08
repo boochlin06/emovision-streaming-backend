@@ -1,0 +1,9 @@
+{
+    "eyes_open_threshold_l": 4.7,
+    "eyes_open_threshold_m": 4.5,
+    "eyes_open_threshold_s": 3.5,
+    "face_height_threshold_for_mouth_status": 128,
+    "large_face_height_lower_bound_for_eyes_status": 110,
+    "middle_face_height_lower_bound_for_eyes_status": 85,
+    "mouth_open_threshold": 5
+}

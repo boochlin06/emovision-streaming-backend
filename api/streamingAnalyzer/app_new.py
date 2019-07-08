@@ -112,19 +112,21 @@ def consumer(id):
                 while (q.qsize()>0):
                     q.get()
                 break
-            analyze(analyzeItem.buffer,analyzeItem.plasmaId,analyzeItem.ws,analyzeItem.timeStamp)
+            analyze(analyzeItem.buffer,analyzeItem.plasmaId,analyzeItem.ws,analyzeItem.timeStamp,analyzeItem.fields,analyzeItem.query)
         except Exception as e:
             gevent.sleep(0)
             print(e)
     print(analyzeItem.ws.id[:7],'time:',datetime.datetime.now(),'close consumer,',id)
 
 class AnalyzeItem():
-    def __init__(self, buffer, plasmaId, ws, item ,timeStamp):
+    def __init__(self, buffer, plasmaId, ws, item ,timeStamp,fields,query):
         self.buffer = buffer
         self.plasmaId = plasmaId
         self.ws = ws
         self.item = item
         self.timeStamp = timeStamp
+        self.fields = fields
+        self.query = query
 
 def sendErrorMessage(ws, timeStamp):
     try:
@@ -142,6 +144,7 @@ def sendErrorMessage(ws, timeStamp):
 def svaeVideoFrame(ws):
     print(ws.id[:7],'time:',datetime.datetime.now(),'environ:',ws.environ)
     query = dict(parse_qsl(ws.environ['QUERY_STRING']))
+    
     autoSpeedChangeFrame = 0
     # print(ws.environ['QUERY_STRING'])
     try:
@@ -180,8 +183,19 @@ def svaeVideoFrame(ws):
             result_rest_gap_time = defalt_rest_gap_time
             total_frame = camera.get(cv2.CAP_PROP_FRAME_COUNT)
             autoSpeedChangeFrame = 0
-                # handshakeFrame = int(handshakeBufferTime/frameGapTime)+1
-            #requestSkipFrame = fps/requestFrameFps
+            
+            fields=[('image_type', 'jpg'),
+                    ('conn_id',ws.id)]
+            try:
+                features = parse_qs(ws.environ['QUERY_STRING'])['feature']
+                if ('faceset_token'in query):
+                    fields.append(('faceset_token',query["faceset_token"]))
+                for feature in features:
+                    fields.append(('feature',feature))
+            except:
+                traceback.print_exc()
+                return
+
             while True:
                 if ws.connected == False:
                     print(ws.id[:7],'time:',datetime.datetime.now(),'avg fps',frameCount/((millis()-frameCountStartTime)/1000))
@@ -237,10 +251,10 @@ def svaeVideoFrame(ws):
                         buffer = cv2.imencode('.jpg', img)[1].tobytes()
                         frameCount+=1
                         if (q.qsize() < workerNume *20):
-                            q.put(AnalyzeItem(buffer,plasma_id,ws,item,camera.get(cv2.CAP_PROP_POS_MSEC)))
+                            q.put(AnalyzeItem(buffer,plasma_id,ws,item,camera.get(cv2.CAP_PROP_POS_MSEC),fields,query))
                             print(ws.id[:7],'time:',datetime.datetime.now(),'camera put frame :',current_pos,',plasma id:',plasma_id\
                                 ,', q size',q.qsize(),',ws:',ws.connected,",timestamp:",camera.get(cv2.CAP_PROP_POS_MSEC),",rest_gap_time:",result_rest_gap_time
-                        ,",cost time:",analyze_time)
+                        ,",cost time:",analyze_time,",img size:",sys.getsizeof(buffer))
 
                         gevent.sleep(result_rest_gap_time)
                     else :
@@ -260,25 +274,15 @@ def svaeVideoFrame(ws):
 
 
 
-def analyze(buffer,plasma_id,ws,timeStamp):
+def analyze(buffer,plasma_id,ws,timeStamp,fields,query):
     timeout = gevent.Timeout(timeOutLimit)
     timeout.start()
     ret_address = base64.b64encode(plasma_id).decode('utf-8')
     tmp_id = millis()
     
     try:
-        query = dict(parse_qsl(ws.environ['QUERY_STRING']))
-        features = parse_qs(ws.environ['QUERY_STRING'])['feature']
-        
-        fields=[('image_type', 'jpg'),
-                    ('tmp_id', str(tmp_id)),
-                    ('plasma_id', ret_address),
-                    ('conn_id',ws.id)]
-        if ('faceset_token'in query):
-            fields.append(('faceset_token',query["faceset_token"]))
-        for feature in features:
-            fields.append(('feature',feature))
-
+        fields.append(('tmp_id', str(tmp_id)))
+        fields.append(('plasma_id', ret_address))
 
         m = MultipartEncoder(
             fields=fields
@@ -286,7 +290,7 @@ def analyze(buffer,plasma_id,ws,timeStamp):
         print(ws.id[:7],'time:',datetime.datetime.now(),',analyze start,q size:',q.qsize(),',tmp id:',tmp_id,'pid:',plasma_id)
         req = grequests.post(analyzeAddress,data=m, headers={'Content-Type': m.content_type},timeout=timeOutLimit)
         res = req.send()
-        if res.response.status_code != 200:
+        if res.response.status_code != 200: 
             print(ws.id[:7],'time:',datetime.datetime.now(),',analyze post error,',res.response,",q.qsize:",q.qsize(),'tmp id:',tmp_id,',pid:',plasma_id)
             return
         analyze_data = json.loads(res.response.text)

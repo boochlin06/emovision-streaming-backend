@@ -3,6 +3,7 @@ import tornado.web
 import tornado.httpclient 
 from tornado.gen import multi
 import tornado.gen as gen
+from tornado import escape
 import os
 import cv2
 import pyarrow.plasma as plasma
@@ -20,6 +21,8 @@ import math
 import logging
 import random
 import emotidraw
+import datetime
+import functools
 
 emotionColorMap =  {}
 emotionColorMap["angry"] = (57,65,243)
@@ -35,8 +38,17 @@ emotionColorMap["surprise"] = (117,49,206)
 logging.basicConfig(level=logging.INFO,format='%(asctime)s %(lineno)d %(message)s')
 
 r = redis.Redis(host='redis', port=6379)
+# sub = r.pubsub()
+# sub.subscribe('behavior_threshold_channel')
+# for message in sub.listen():
+#     print('Got message', message)
+#     if (
+#         isinstance(message.get('data'), bytes) and
+#         message['data'].decode() == 'GREETING'
+#     ):
+#         print('Hello')
 
-PIPELINE_URL = os.environ['PIPELINE_URL']
+PIPELINE_URL = os.environ['PIPELINE_URL'] 
 
 # PIPELINE_URL = "http://192.168.0.108:8001"
 
@@ -48,11 +60,30 @@ wonderful_face_count_threshold = 8
 wonderful_hands_up_pct = 0.2
 wonderful_emotion_pct = 0.6
 
+threshold_set = {
+    "mouth_open_threshold",
+    "face_height_threshold_for_mouth_status",
+    # "eye_eyebrow_dist_ratio_threshold",
+    "eyes_open_threshold_l",
+    "eyes_open_threshold_m",
+    "eyes_open_threshold_s",
+    "large_face_height_lower_bound_for_eyes_status",
+    "middle_face_height_lower_bound_for_eyes_status"
+}
+threshold = {
+    "mouth_open_threshold":5,
+    "face_height_threshold_for_mouth_status":128,
+    # "eye_eyebrow_dist_ratio_threshold":0.1,
+    "eyes_open_threshold_l":4.7,
+    "eyes_open_threshold_m":4.5, 
+    "eyes_open_threshold_s":3.5,
+    "large_face_height_lower_bound_for_eyes_status":110,
+    "middle_face_height_lower_bound_for_eyes_status":85
+}
 
-mouth_open_threshold = 5
-eyes_open_threshold_l = 4.7
-eyes_open_threshold_m = 4.5
-eyes_open_threshold_s = 3.5
+
+
+
 eyes_open_threshold = 0.5
 
 headpose_all_pass_pct_threshold = 0.85
@@ -189,8 +220,10 @@ def get_eyes_status(landmark):
         return 0
 
 def get_mouth_status_v2(face):
+    global threshold_set
+    global threshold
+
     landmark = face["landmark"]
-    scaler = face['face_rectangle']['height']/128 
     facial_landmark = landmark["facial_landmark"]
     headpose = landmark["facial_head_pose"]
     
@@ -199,9 +232,9 @@ def get_mouth_status_v2(face):
 
     dist = landmark_dist(facial_landmark["62"],facial_landmark["66"])
     
-    if face['face_rectangle']['height'] < 128 and dist > mouth_open_threshold:
-        return 2
-    if dist > scaler * mouth_open_threshold:
+    if face['face_rectangle']['height'] >= threshold["face_height_threshold_for_mouth_status"] and dist >= threshold["mouth_open_threshold"]:
+        return 1
+    elif dist >= face['face_rectangle']['height']/threshold["face_height_threshold_for_mouth_status"] * threshold["mouth_open_threshold"]:
         return 1
     else:
         return 0
@@ -209,6 +242,8 @@ def get_mouth_status_v2(face):
     
 
 def get_eyes_status_v2(face):
+    global threshold_set
+    global threshold
     
     landmark = face["landmark"]
     height = face['face_rectangle']['height']
@@ -226,8 +261,6 @@ def get_eyes_status_v2(face):
     l_eye_ratio = dist_l_eb_eye/height
 
     if r_eye_ratio < 0.1 or l_eye_ratio  < 0.1:
-        # print(height)
-        # print("Unknown by ratio",r_eye_ratio,l_eye_ratio)
         return 2
 
     dist_r_2 = landmark_dist(facial_landmark["37"],facial_landmark["41"])
@@ -239,18 +272,18 @@ def get_eyes_status_v2(face):
 
     
 
-    if height >= 110:
-        if eye_dist >= eyes_open_threshold_l:
+    if height >= threshold["large_face_height_lower_bound_for_eyes_status"]:
+        if eye_dist >= threshold["eyes_open_threshold_l"]: 
             return 1
         else:
             return 0
-    elif height < 110 and height >= 85:
-        if eye_dist >= eyes_open_threshold_m:
+    elif height < threshold["large_face_height_lower_bound_for_eyes_status"] and height >= threshold["middle_face_height_lower_bound_for_eyes_status"]:
+        if eye_dist >= threshold["eyes_open_threshold_m"]:
             return 1
         else:
             return 0
     else:
-        if eye_dist >= eyes_open_threshold_s:
+        if eye_dist >= threshold["eyes_open_threshold_s"]: 
             return 1
         else:
             return 0
@@ -404,6 +437,12 @@ def get_hands_up_score_list(conn_id,faces,hands_up_count):
     score_list = [toScore(x)for x in score_list ]
     return score_list
 
+def resp_callback(future, feature,handler,start):
+    if feature == "FACE":
+        handler.face_time = int((time.time()-start)*1000)
+    if feature == "BODY":
+        handler.body_time = int((time.time()-start)*1000)
+
 
     
 class MainHandler(tornado.web.RequestHandler):
@@ -411,7 +450,7 @@ class MainHandler(tornado.web.RequestHandler):
     def write_error(self, status_code, **kwargs):
         self.set_header('Content-Type', 'application/json')
         logging.debug(self._reason)
-        print("ERROR: tmp_id, face, body = ",time.time(),self.tmp_id,self.face_time,self.body_time)
+        print("ERROR: tmp_id, face, body = ",datetime.datetime.now(),self.tmp_id,self.face_time,self.body_time)
         # logging.debug('%s' % self.request.body)
         self.finish(json.dumps({
             'request_id': self.request_id,
@@ -489,35 +528,38 @@ class MainHandler(tornado.web.RequestHandler):
         if self.get_argument("conn_id",None,True) == None:
             feature.append('FACE')
 
+
+
         feature_list = []
         request_list = []
         response_list = []
         start = time.time()
-        if  "BODY" in feature:
-            feature_list.append("BODY")
-            request_list.append(bodyservice.do_infer(img_bytes))
+        
         if "FACE" in feature:
             feature_list.append("FACE")
             request_list.append(tornado.httpclient.AsyncHTTPClient().fetch(tornado.httpclient.HTTPRequest(PIPELINE_URL+"/emotibot/v2/analyze", 'POST', body=self.request.body, headers=self.request.headers )))
-        
+        if  "BODY" in feature:
+            feature_list.append("BODY")
+            request_list.append(bodyservice.do_infer(img_bytes))
         # response_list = await multi(request_list)   
-
 
         for i in range(len(feature_list)):
             if feature_list[i] == "FACE":
-                # start_time = time.time()
-                resp = await request_list[i]
-                # print("face latency",int((time.time()-start)*1000))
-                response_list.append(resp)
-                self.face_time = int((time.time()-start)*1000)
+                request_list[i].add_done_callback(
+                    functools.partial(resp_callback, feature="FACE", handler=self,start=start)
+                )
             if feature_list[i] == "BODY":
-                # start_time = time.time()
-                resp = await request_list[i]
-                # print("body latency",int((time.time()-start)*1000))
-                response_list.append(resp)
-                self.body_time = int((time.time()-start)*1000)
+                request_list[i].add_done_callback(
+                    functools.partial(resp_callback, feature="BODY",handler=self,start=start)
+                )
+
+        for i in range(len(feature_list)):     
+            resp = await request_list[i]
+            response_list.append(resp)
+
+
             
-        print("tmp_id, face, body = ",time.time(),self.tmp_id,self.face_time,self.body_time)
+        print("tmp_id, face, body = ",datetime.datetime.now(),self.tmp_id,self.face_time,self.body_time)
 
         summary = {}
         for i in reversed(range(len(feature_list))):
@@ -894,18 +936,99 @@ class BodyHandler(tornado.web.RequestHandler):
 class SleepHandler(tornado.web.RequestHandler):
     async def post(self):
         await gen.sleep(3)
-        self.write('hello world\n')
+        self.write('hello\n')
+
+
+def verify_threshold(data):
+    global threshold_set
+    try:
+        if set(data.keys()) == threshold_set:
+            if data['mouth_open_threshold'] < 0 :
+                return False
+            if data['face_height_threshold_for_mouth_status'] <=0 :
+                return False
+            # if data["eye_eyebrow_dist_ratio_threshold"] < 0:
+            #     return False
+            if data['eyes_open_threshold_l'] <0 :
+                return False
+            if data['eyes_open_threshold_m'] <0 :
+                return False
+            if data['eyes_open_threshold_s'] <0 :
+                return False
+            if data['large_face_height_lower_bound_for_eyes_status'] <0 :
+                return False
+            if data['middle_face_height_lower_bound_for_eyes_status'] <0 :
+                return False
+        else:
+            return False
+    except Exception as e: 
+        print(e)
+        return False
+    return True
+
+    
+
+class ThresholdHandler(tornado.web.RequestHandler):
+    def write_error(self, status_code, **kwargs):
+        self.set_header('Content-Type', 'application/json')
+        logging.debug(self._reason)
+        # logging.debug(self.request.body)
+        self.finish(json.dumps({
+            'error': status_code,
+            'message': self._reason,
+        }))
+
+    async def put(self): 
+        data = escape.json_decode(self.request.body)
+        data = data['threshold']
+        print(data)
+        if verify_threshold(data):
+            global threshold
+            threshold = data
+            # print(data.keys())
+            json_data = json.dumps(threshold, indent=4, sort_keys=True)
+            f = open("threshold.json","w")
+            f.write(json_data)
+            f.close()
+            self.write({
+                'time_used':0,
+                'result_code':0,
+                'result_msg':"success",
+                'request_id':str(uuid.uuid4()),
+            })
+        else:
+            self.write({
+                "request_id":str(uuid.uuid4()),
+                "message": "This threshold setting is unacceptable.",
+                "error": "BAD_REQUEST",
+            })
+
+
+    async def get(self): 
+        global threshold
+        self.write({
+            'time_used':0,
+            'result_code':0,
+            'result_msg':"success",
+            'request_id':str(uuid.uuid4()),
+            'threshold':threshold,
+        })
 
 def make_app():
     return tornado.web.Application([
         (r"/emotibot/v2/analyze", MainHandler),
         (r"/emotibot/v2/draw", DrawHandler),
-        (r"/emotibot/analyzeBody", BodyHandler),
+        (r"/emotibot/analyzebody", BodyHandler),
         (r"/sleep",SleepHandler),
-    ])
+        (r"/emotibot/threshold",ThresholdHandler),
+    ],autoreload=True)
 
 if __name__ == "__main__":
+    with open('threshold.json') as f:
+        data = json.load(f)
+        threshold = data
     app = make_app()
     app.listen(int(os.environ['GATEWAY_PORT']))
     logging.debug("app is listen on port %s" % os.environ['GATEWAY_PORT'])
+    tornado.autoreload.watch("threshold.json")
     tornado.ioloop.IOLoop.current().start() 

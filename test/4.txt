@@ -1,0 +1,10 @@
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=29&subtype=0&starttime=2019_06_26_15_35_00&endtime=2019_06_26_16_20_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=125&subtype=0&starttime=2019_06_27_09_05_00&endtime=2019_06_27_09_50_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=29&subtype=0&starttime=2019_06_27_10_30_00&endtime=2019_06_27_11_15_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=72&subtype=0&starttime=2019_06_27_09_05_00&endtime=2019_06_27_09_50_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=109&subtype=0&starttime=2019_06_27_09_05_00&endtime=2019_06_27_09_50_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=34&subtype=0&starttime=2019_06_26_15_35_00&endtime=2019_06_26_16_20_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=34&subtype=0&starttime=2019_06_27_10_30_00&endtime=2019_06_27_11_15_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=109&subtype=0&starttime=2019_06_27_10_30_00&endtime=2019_06_27_11_15_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=66&subtype=0&starttime=2019_06_27_08_10_00&endtime=2019_06_27_08_55_00
+rtsp://admin:admin123@192.168.0.119:554/cam/playback?channel=43&subtype=0&starttime=2019_06_27_09_05_00&endtime=2019_06_27_09_50_00
