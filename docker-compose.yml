@@ -55,6 +55,7 @@ services:
         depends_on:
         - redis
         ipc: "host"
+        restart: always
         networks: 
         - web_nw
     monitor:
@@ -64,6 +65,7 @@ services:
         ports:
         - "7055:5555"
         entrypoint: flower
+        restart: always
         command:  -A tasks --port=5555 --broker=redis://redis:6379/0
         depends_on:
             - redis
@@ -95,6 +97,7 @@ services:
         - gateway
     redis:
         image: redis
+        restart: always
         networks: 
         - web_nw  
 volumes:
